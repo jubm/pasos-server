@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,23 +41,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Localizacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "LONGITUD_P")
-    private double longitudP;
+    private BigInteger longitudP;
     @Column(name = "LATITUD_P")
-    private double latitudP;
+    private BigInteger latitudP;
     @Column(name = "LONGITUD_M")
-    private double longitudM;
+    private BigInteger longitudM;
     @Column(name = "LATITUD_M")
-    private double latitudM;
+    private BigInteger latitudM;
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Column(name = "HORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date hora;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 18)
     @Column(name = "ID_LOCALIZACION")
     private BigDecimal idLocalizacion;
     @JoinColumn(name = "ID_ALARMA", referencedColumnName = "ID_ALARMA")
@@ -72,35 +71,35 @@ public class Localizacion implements Serializable {
         this.idLocalizacion = idLocalizacion;
     }
 
-    public double getLongitudP() {
+    public BigInteger getLongitudP() {
         return longitudP;
     }
 
-    public void setLongitudP(double longitudP) {
+    public void setLongitudP(BigInteger longitudP) {
         this.longitudP = longitudP;
     }
 
-    public double getLatitudP() {
+    public BigInteger getLatitudP() {
         return latitudP;
     }
 
-    public void setLatitudP(double latitudP) {
+    public void setLatitudP(BigInteger latitudP) {
         this.latitudP = latitudP;
     }
 
-    public double getLongitudM() {
+    public BigInteger getLongitudM() {
         return longitudM;
     }
 
-    public void setLongitudM(double longitudM) {
+    public void setLongitudM(BigInteger longitudM) {
         this.longitudM = longitudM;
     }
 
-    public double getLatitudM() {
+    public BigInteger getLatitudM() {
         return latitudM;
     }
 
-    public void setLatitudM(double latitudM) {
+    public void setLatitudM(BigInteger latitudM) {
         this.latitudM = latitudM;
     }
 

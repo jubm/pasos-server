@@ -4,11 +4,19 @@
  */
 package pasosServer.model;
 
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,7 +63,7 @@ public class Protegido implements Serializable {
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "TELEFONO_MOVIL")
-    private int telefonoMovil;
+    private BigInteger telefonoMovil;
     @Size(max = 30)
     @Column(name = "APELLIDOS")
     private String apellidos;
@@ -66,9 +74,9 @@ public class Protegido implements Serializable {
     @Column(name = "FOTO")
     private byte[] foto;
     @Column(name = "LONGITUD")
-    private double longitud;
+    private BigInteger longitud;
     @Column(name = "LATITUD")
-    private double latitud;
+    private BigInteger latitud;
     @Size(max = 18)
     @Column(name = "IMEI")
     private String imei;
@@ -102,6 +110,14 @@ public class Protegido implements Serializable {
         this.nombre = nombre;
     }
 
+    public BigInteger getTelefonoMovil() {
+        return telefonoMovil;
+    }
+
+    public void setTelefonoMovil(BigInteger telefonoMovil) {
+        this.telefonoMovil = telefonoMovil;
+    }
+
     public String getApellidos() {
         return apellidos;
     }
@@ -118,8 +134,28 @@ public class Protegido implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+
+    public BigInteger getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(BigInteger longitud) {
+        this.longitud = longitud;
+    }
+
+    public BigInteger getLatitud() {
+        return latitud;
+    }
+
     public void setLatitud(BigInteger latitud) {
-        this.setLatitud(latitud);
+        this.latitud = latitud;
     }
 
     public String getImei() {
@@ -181,54 +217,20 @@ public class Protegido implements Serializable {
     public String toString() {
         return "pasosServer.model.Protegido[ idProtegido=" + idProtegido + " ]";
     }
-
-    /**
-     * @param telefonoMovil the telefonoMovil to set
-     */
-    public void setTelefonoMovil(int telefonoMovil) {
-        this.telefonoMovil = telefonoMovil;
-    }
-
-    /**
-     * @param longitud the longitud to set
-     */
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
-    }
-
-    /**
-     * @param latitud the latitud to set
-     */
-    public void setLatitud(double latitud) {
-        this.latitud = latitud;
-    }
-
-    /**
-     * @return the foto
-     */
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    /**
-     * @param foto the foto to set
-     */
-    public void setFoto(byte[] foto) {
-        this.setFoto(foto);
-    }
-
-    /**
-     * @return the longitud
-     */
-    public double getLongitud() {
-        return longitud;
-    }
-
-    /**
-     * @return the latitud
-     */
-    public double getLatitud() {
-        return latitud;
-    }
     
+    public Image getImage() throws IOException{
+        ByteArrayInputStream bis = new ByteArrayInputStream(this.foto);
+        Iterator readers = ImageIO.getImageReadersByFormatName("jpeg");
+        ImageReader reader = (ImageReader) readers.next();
+        Object source = bis; // File or InputStream
+        ImageInputStream iis = ImageIO.createImageInputStream(source);
+        reader.setInput(iis, true);
+        ImageReadParam param = reader.getDefaultReadParam();
+        /*if (isThumbnail) {
+
+            param.setSourceSubsampling(4, 4, 0, 0);
+
+        }*/
+        return reader.read(0, param);
+    }
 }

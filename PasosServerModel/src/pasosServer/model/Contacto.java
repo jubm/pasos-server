@@ -44,10 +44,10 @@ public class Contacto implements Serializable {
     @Size(max = 30)
     @Column(name = "EMAIL")
     private String email;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 18)
     @Column(name = "ID_CONTACTO")
     private BigDecimal idContacto;
     @JoinColumn(name = "ID_PROTEGIDO", referencedColumnName = "ID_PROTEGIDO")

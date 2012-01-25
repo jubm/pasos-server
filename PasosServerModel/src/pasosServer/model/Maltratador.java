@@ -57,16 +57,16 @@ public class Maltratador implements Serializable {
     @Column(name = "APELLIDOS")
     private String apellidos;
     @Column(name = "DISPOSITIVO")
-    private int dispositivo;
+    private BigInteger dispositivo;
     @Lob
     @Column(name = "FOTO")
     private byte[] foto;
     @Column(name = "DISTANCIA_ALEJAMIENTO")
-    private int distanciaAlejamiento;
+    private BigInteger distanciaAlejamiento;
     @Column(name = "LONGITUD")
-    private double longitud;
+    private BigInteger longitud;
     @Column(name = "LATITUD")
-    private double latitud;
+    private BigInteger latitud;
     @Size(max = 18)
     @Column(name = "IMEI")
     private String imei;
@@ -107,15 +107,15 @@ public class Maltratador implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public int getDispositivo() {
+    public BigInteger getDispositivo() {
         return dispositivo;
     }
 
-    public void setDispositivo(int dispositivo) {
+    public void setDispositivo(BigInteger dispositivo) {
         this.dispositivo = dispositivo;
     }
 
-    public byte[] getFoto() {
+    public Serializable getFoto() {
         return foto;
     }
 
@@ -123,27 +123,27 @@ public class Maltratador implements Serializable {
         this.foto = foto;
     }
 
-    public int getDistanciaAlejamiento() {
+    public BigInteger getDistanciaAlejamiento() {
         return distanciaAlejamiento;
     }
 
-    public void setDistanciaAlejamiento(int distanciaAlejamiento) {
+    public void setDistanciaAlejamiento(BigInteger distanciaAlejamiento) {
         this.distanciaAlejamiento = distanciaAlejamiento;
     }
 
-    public double getLongitud() {
+    public BigInteger getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(double longitud) {
+    public void setLongitud(BigInteger longitud) {
         this.longitud = longitud;
     }
 
-    public double getLatitud() {
+    public BigInteger getLatitud() {
         return latitud;
     }
 
-    public void setLatitud(double latitud) {
+    public void setLatitud(BigInteger latitud) {
         this.latitud = latitud;
     }
 
