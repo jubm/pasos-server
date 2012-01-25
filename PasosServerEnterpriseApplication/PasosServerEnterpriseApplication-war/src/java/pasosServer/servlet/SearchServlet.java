@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +36,8 @@ public class SearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        //response.setContentType("text/html;charset=UTF-8");
+        //PrintWriter out = response.getWriter();
         try {
             String nombre=request.getParameter("nombre");
             String apellidos=request.getParameter("apellidos");
@@ -44,9 +45,12 @@ public class SearchServlet extends HttpServlet {
             //request.setAttribute("apellidos", apellidos);
             //System.out.println(nombre+" "+apellidos);
             Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
+            
             if(protegido!=null){
+                System.out.println(protegido.getNombre());
                 ProtegidoInfoBean bean=new ProtegidoInfoBean();
                 bean.setProtegido(protegido);
+                bean.setFoto(protegido.getImage());
                 request.setAttribute("ProtegidoInfoBean", bean);
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarDatos.jsp");
                 dispatcher.forward(request, response);
@@ -54,7 +58,7 @@ public class SearchServlet extends HttpServlet {
             
             //System.out.println("hola");
         } finally {            
-            out.close();
+            //out.close();
         }
     }
 
