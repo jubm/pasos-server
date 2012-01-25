@@ -5,6 +5,7 @@
 package pasosServer.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -41,13 +42,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Localizacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "LONGITUD_P")
-    private BigInteger longitudP;
+    private double longitudP;
     @Column(name = "LATITUD_P")
-    private BigInteger latitudP;
+    private double latitudP;
     @Column(name = "LONGITUD_M")
-    private BigInteger longitudM;
+    private double longitudM;
     @Column(name = "LATITUD_M")
-    private BigInteger latitudM;
+    private double latitudM;
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -59,7 +60,7 @@ public class Localizacion implements Serializable {
     @NotNull
     @Size(min = 1, max = 18)
     @Column(name = "ID_LOCALIZACION")
-    private String idLocalizacion;
+    private BigDecimal idLocalizacion;
     @JoinColumn(name = "ID_ALARMA", referencedColumnName = "ID_ALARMA")
     @ManyToOne(optional = false)
     private Alarma idAlarma;
@@ -67,39 +68,39 @@ public class Localizacion implements Serializable {
     public Localizacion() {
     }
 
-    public Localizacion(String idLocalizacion) {
+    public Localizacion(BigDecimal idLocalizacion) {
         this.idLocalizacion = idLocalizacion;
     }
 
-    public BigInteger getLongitudP() {
+    public double getLongitudP() {
         return longitudP;
     }
 
-    public void setLongitudP(BigInteger longitudP) {
+    public void setLongitudP(double longitudP) {
         this.longitudP = longitudP;
     }
 
-    public BigInteger getLatitudP() {
+    public double getLatitudP() {
         return latitudP;
     }
 
-    public void setLatitudP(BigInteger latitudP) {
+    public void setLatitudP(double latitudP) {
         this.latitudP = latitudP;
     }
 
-    public BigInteger getLongitudM() {
+    public double getLongitudM() {
         return longitudM;
     }
 
-    public void setLongitudM(BigInteger longitudM) {
+    public void setLongitudM(double longitudM) {
         this.longitudM = longitudM;
     }
 
-    public BigInteger getLatitudM() {
+    public double getLatitudM() {
         return latitudM;
     }
 
-    public void setLatitudM(BigInteger latitudM) {
+    public void setLatitudM(double latitudM) {
         this.latitudM = latitudM;
     }
 
@@ -119,11 +120,11 @@ public class Localizacion implements Serializable {
         this.hora = hora;
     }
 
-    public String getIdLocalizacion() {
+    public BigDecimal getIdLocalizacion() {
         return idLocalizacion;
     }
 
-    public void setIdLocalizacion(String idLocalizacion) {
+    public void setIdLocalizacion(BigDecimal idLocalizacion) {
         this.idLocalizacion = idLocalizacion;
     }
 

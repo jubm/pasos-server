@@ -5,6 +5,7 @@
 package pasosServer.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -48,7 +49,7 @@ public class Contacto implements Serializable {
     @NotNull
     @Size(min = 1, max = 18)
     @Column(name = "ID_CONTACTO")
-    private String idContacto;
+    private BigDecimal idContacto;
     @JoinColumn(name = "ID_PROTEGIDO", referencedColumnName = "ID_PROTEGIDO")
     @ManyToOne
     private Protegido idProtegido;
@@ -56,7 +57,7 @@ public class Contacto implements Serializable {
     public Contacto() {
     }
 
-    public Contacto(String idContacto) {
+    public Contacto(BigDecimal idContacto) {
         this.idContacto = idContacto;
     }
 
@@ -84,11 +85,11 @@ public class Contacto implements Serializable {
         this.email = email;
     }
 
-    public String getIdContacto() {
+    public BigDecimal getIdContacto() {
         return idContacto;
     }
 
-    public void setIdContacto(String idContacto) {
+    public void setIdContacto(BigDecimal idContacto) {
         this.idContacto = idContacto;
     }
 
