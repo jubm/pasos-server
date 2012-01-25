@@ -18,6 +18,7 @@ public class ProtegidoFacade extends AbstractFacade<Protegido> implements Proteg
     @PersistenceContext(unitName = "PasosServerEnterpriseApplication-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -26,4 +27,12 @@ public class ProtegidoFacade extends AbstractFacade<Protegido> implements Proteg
         super(Protegido.class);
     }
     
+    
+    @Override
+    public Protegido findProtegidoByNombreAndApellidos(String nombre, String apellidos){
+        return (Protegido) em.createQuery("select p from Protegido p where p.nombre=:nombre and p.apellidos=:apellidos")
+                .setParameter("nombre", nombre)
+                .setParameter("apellidos", apellidos)
+                .getSingleResult();
+    }
 }
