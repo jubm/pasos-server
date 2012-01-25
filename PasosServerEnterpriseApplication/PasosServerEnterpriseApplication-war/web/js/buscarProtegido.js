@@ -8,7 +8,6 @@ $(document).ready(function(){
        nombre=$("#nombre").val();
        apellidos=$("#apellidos").val();
         $.post("http://localhost:8080/PasosServerEnterpriseApplication-war/SearchServlet?nombre="+nombre+"&apellidos="+apellidos,function(data){
-            alert("Recibido: "+data);
             $("#datos").empty().append(data);
         });
     }) 
