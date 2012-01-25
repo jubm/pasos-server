@@ -35,4 +35,6 @@ public class ProtegidoFacade extends AbstractFacade<Protegido> implements Proteg
                 .setParameter("apellidos", apellidos)
                 .getSingleResult();
     }
+    
+    
 }
