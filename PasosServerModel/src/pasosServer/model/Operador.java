@@ -52,7 +52,7 @@ public class Operador implements Serializable {
     @Column(name = "APELLIDOS")
     private String apellidos;
     @Column(name = "EXTENSION_TELEFONO")
-    private BigInteger extensionTelefono;
+    private int extensionTelefono;
     @Size(max = 20)
     @Column(name = "LOGIN")
     private String login;
@@ -93,11 +93,11 @@ public class Operador implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public BigInteger getExtensionTelefono() {
+    public int getExtensionTelefono() {
         return extensionTelefono;
     }
 
-    public void setExtensionTelefono(BigInteger extensionTelefono) {
+    public void setExtensionTelefono(int extensionTelefono) {
         this.extensionTelefono = extensionTelefono;
     }
 

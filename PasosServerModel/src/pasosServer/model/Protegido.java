@@ -55,7 +55,7 @@ public class Protegido implements Serializable {
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "TELEFONO_MOVIL")
-    private BigInteger telefonoMovil;
+    private int telefonoMovil;
     @Size(max = 30)
     @Column(name = "APELLIDOS")
     private String apellidos;
@@ -64,11 +64,11 @@ public class Protegido implements Serializable {
     private Date fechaNacimiento;
     @Lob
     @Column(name = "FOTO")
-    private Serializable foto;
+    private byte[] foto;
     @Column(name = "LONGITUD")
-    private BigInteger longitud;
+    private double longitud;
     @Column(name = "LATITUD")
-    private BigInteger latitud;
+    private double latitud;
     @Size(max = 18)
     @Column(name = "IMEI")
     private String imei;
@@ -102,14 +102,6 @@ public class Protegido implements Serializable {
         this.nombre = nombre;
     }
 
-    public BigInteger getTelefonoMovil() {
-        return telefonoMovil;
-    }
-
-    public void setTelefonoMovil(BigInteger telefonoMovil) {
-        this.telefonoMovil = telefonoMovil;
-    }
-
     public String getApellidos() {
         return apellidos;
     }
@@ -126,28 +118,8 @@ public class Protegido implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Serializable getFoto() {
-        return foto;
-    }
-
-    public void setFoto(Serializable foto) {
-        this.foto = foto;
-    }
-
-    public BigInteger getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(BigInteger longitud) {
-        this.longitud = longitud;
-    }
-
-    public BigInteger getLatitud() {
-        return latitud;
-    }
-
     public void setLatitud(BigInteger latitud) {
-        this.latitud = latitud;
+        this.setLatitud(latitud);
     }
 
     public String getImei() {
@@ -208,6 +180,55 @@ public class Protegido implements Serializable {
     @Override
     public String toString() {
         return "pasosServer.model.Protegido[ idProtegido=" + idProtegido + " ]";
+    }
+
+    /**
+     * @param telefonoMovil the telefonoMovil to set
+     */
+    public void setTelefonoMovil(int telefonoMovil) {
+        this.telefonoMovil = telefonoMovil;
+    }
+
+    /**
+     * @param longitud the longitud to set
+     */
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    /**
+     * @param latitud the latitud to set
+     */
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    /**
+     * @return the foto
+     */
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    /**
+     * @param foto the foto to set
+     */
+    public void setFoto(byte[] foto) {
+        this.setFoto(foto);
+    }
+
+    /**
+     * @return the longitud
+     */
+    public double getLongitud() {
+        return longitud;
+    }
+
+    /**
+     * @return the latitud
+     */
+    public double getLatitud() {
+        return latitud;
     }
     
 }
