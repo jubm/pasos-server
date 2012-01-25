@@ -28,5 +28,7 @@ public interface ProtegidoFacadeRemote {
     List<Protegido> findRange(int[] range);
 
     int count();
+
+    public pasosServer.model.Protegido findProtegidoByNombreAndApellidos(java.lang.String nombre, java.lang.String apellidos);
     
 }
