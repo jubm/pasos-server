@@ -6,6 +6,7 @@ package pasosServer.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import pasosServer.ejb.AlarmaFacadeRemote;
 import pasosServer.ejb.ProtegidoFacadeRemote;
 import pasosServer.jspbeans.ProtegidoInfoBean;
 import pasosServer.model.Protegido;
@@ -25,6 +27,8 @@ import pasosServer.model.Protegido;
  */
 @WebServlet(name = "SearchServlet", urlPatterns = {"/SearchServlet"})
 public class SearchServlet extends HttpServlet {
+    @EJB
+    private AlarmaFacadeRemote alarmaFacade;
     @EJB
     private ProtegidoFacadeRemote protegidoFacade;
 
@@ -37,15 +41,19 @@ public class SearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.setContentType("text/html;charset=UTF-8");
-        //PrintWriter out = response.getWriter();
         try {
             String nombre=request.getParameter("nombre");
             String apellidos=request.getParameter("apellidos");
-            //request.setAttribute("nombre", nombre);
-            //request.setAttribute("apellidos", apellidos);
-            //System.out.println(nombre+" "+apellidos);
-            Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
+            
+            List list=this.alarmaFacade.findAlarmasGroupByMonth();
+            for(Object o:list){
+                Object[] tupla=(Object[])o;
+                Integer cont=(Integer)tupla[0];
+                Integer mes=(Integer)tupla[1]; 
+                System.out.println("Cont: "+cont+", Mes: "+mes);
+            }
+           
+            /*Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
             
             if(protegido!=null){
                 System.out.println(protegido.getNombre());
@@ -58,11 +66,8 @@ public class SearchServlet extends HttpServlet {
                 request.setAttribute("ProtegidoInfoBean", bean);
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarDatos.jsp");
                 dispatcher.forward(request, response);
-            }
-            
-            //System.out.println("hola");
+            }*/
         } finally {            
-            //out.close();
         }
     }
 
