@@ -7,10 +7,8 @@ package pasosServer.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,13 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Alarma.findByIdAlarma", query = "SELECT a FROM Alarma a WHERE a.idAlarma = :idAlarma"),
     @NamedQuery(name = "Alarma.findByFechaHora", query = "SELECT a FROM Alarma a WHERE a.fechaHora = :fechaHora"),
     @NamedQuery(name = "Alarma.findByEstadoAlarma", query = "SELECT a FROM Alarma a WHERE a.estadoAlarma = :estadoAlarma"),
-    @NamedQuery(name = "Alarma.findByTipo", query = "SELECT a FROM Alarma a WHERE a.tipo = :tipo")})
+    @NamedQuery(name = "Alarma.findByTipo", query = "SELECT a FROM Alarma a WHERE a.tipo = :tipo"),
+    @NamedQuery(name = "Alarma.findByDescripcion", query = "SELECT a FROM Alarma a WHERE a.descripcion = :descripcion")})
 public class Alarma implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -54,6 +52,9 @@ public class Alarma implements Serializable {
     private BigInteger estadoAlarma;
     @Column(name = "TIPO")
     private BigInteger tipo;
+    @Size(max = 200)
+    @Column(name = "DESCRIPCION")
+    private String descripcion;
     @JoinColumn(name = "ID_PROTEGIDO", referencedColumnName = "ID_PROTEGIDO")
     @ManyToOne(optional = false)
     private Protegido idProtegido;
@@ -63,8 +64,6 @@ public class Alarma implements Serializable {
     @JoinColumn(name = "ID_MALTRATADOR", referencedColumnName = "ID_MALTRATADOR")
     @ManyToOne(optional = false)
     private Maltratador idMaltratador;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAlarma")
-    private Collection<Localizacion> localizacionCollection;
 
     public Alarma() {
     }
@@ -105,6 +104,14 @@ public class Alarma implements Serializable {
         this.tipo = tipo;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public Protegido getIdProtegido() {
         return idProtegido;
     }
@@ -127,15 +134,6 @@ public class Alarma implements Serializable {
 
     public void setIdMaltratador(Maltratador idMaltratador) {
         this.idMaltratador = idMaltratador;
-    }
-
-    @XmlTransient
-    public Collection<Localizacion> getLocalizacionCollection() {
-        return localizacionCollection;
-    }
-
-    public void setLocalizacionCollection(Collection<Localizacion> localizacionCollection) {
-        this.localizacionCollection = localizacionCollection;
     }
 
     @Override

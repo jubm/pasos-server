@@ -7,6 +7,7 @@ package pasosServer.ejb;
 import java.util.List;
 import javax.ejb.Remote;
 import pasosServer.model.Alarma;
+import pasosServer.model.Protegido;
 
 /**
  *
@@ -28,5 +29,7 @@ public interface AlarmaFacadeRemote {
     List<Alarma> findRange(int[] range);
 
     int count();
+
+    public List<Alarma> findAlarmasByIdProtegido(Protegido idprotegido);
     
 }

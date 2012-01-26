@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Maltratador.findByLatitud", query = "SELECT m FROM Maltratador m WHERE m.latitud = :latitud"),
     @NamedQuery(name = "Maltratador.findByImei", query = "SELECT m FROM Maltratador m WHERE m.imei = :imei")})
 public class Maltratador implements Serializable {
+    @Lob
+    @Column(name = "FOTO")
+    private byte[] foto;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -58,9 +61,6 @@ public class Maltratador implements Serializable {
     private String apellidos;
     @Column(name = "DISPOSITIVO")
     private BigInteger dispositivo;
-    @Lob
-    @Column(name = "FOTO")
-    private byte[] foto;
     @Column(name = "DISTANCIA_ALEJAMIENTO")
     private BigInteger distanciaAlejamiento;
     @Column(name = "LONGITUD")
@@ -113,14 +113,6 @@ public class Maltratador implements Serializable {
 
     public void setDispositivo(BigInteger dispositivo) {
         this.dispositivo = dispositivo;
-    }
-
-    public Serializable getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
     }
 
     public BigInteger getDistanciaAlejamiento() {
@@ -195,6 +187,14 @@ public class Maltratador implements Serializable {
     @Override
     public String toString() {
         return "pasosServer.model.Maltratador[ idMaltratador=" + idMaltratador + " ]";
+    }
+
+    public Serializable getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
     
 }

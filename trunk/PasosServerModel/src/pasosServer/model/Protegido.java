@@ -52,6 +52,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Protegido.findByLatitud", query = "SELECT p FROM Protegido p WHERE p.latitud = :latitud"),
     @NamedQuery(name = "Protegido.findByImei", query = "SELECT p FROM Protegido p WHERE p.imei = :imei")})
 public class Protegido implements Serializable {
+    @Column(name = "FECHA_NACIMIENTO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
+    @Lob
+    @Column(name = "FOTO")
+    private byte[] foto;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -67,12 +73,6 @@ public class Protegido implements Serializable {
     @Size(max = 30)
     @Column(name = "APELLIDOS")
     private String apellidos;
-    @Column(name = "FECHA_NACIMIENTO")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaNacimiento;
-    @Lob
-    @Column(name = "FOTO")
-    private byte[] foto;
     @Column(name = "LONGITUD")
     private BigInteger longitud;
     @Column(name = "LATITUD")
@@ -132,14 +132,6 @@ public class Protegido implements Serializable {
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
     }
 
     public BigInteger getLongitud() {
@@ -232,5 +224,14 @@ public class Protegido implements Serializable {
 
         }*/
         return reader.read(0, param);
+    }
+
+
+    public Serializable getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
 }
