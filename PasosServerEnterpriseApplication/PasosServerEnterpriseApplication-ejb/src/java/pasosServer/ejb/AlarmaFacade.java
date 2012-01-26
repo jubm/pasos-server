@@ -4,10 +4,12 @@
  */
 package pasosServer.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import pasosServer.model.Alarma;
+import pasosServer.model.Protegido;
 
 /**
  *
@@ -26,4 +28,11 @@ public class AlarmaFacade extends AbstractFacade<Alarma> implements AlarmaFacade
         super(Alarma.class);
     }
     
+    @Override
+    public List<Alarma> findAlarmasByIdProtegido(Protegido protegido){
+        return em.createQuery("select al from Alarma al where al.idProtegido=:protegido")
+                .setParameter("protegido", protegido)
+                .getResultList();
+                
+    }
 }
