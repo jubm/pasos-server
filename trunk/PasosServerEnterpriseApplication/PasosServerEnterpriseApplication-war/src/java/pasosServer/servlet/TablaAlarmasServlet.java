@@ -6,27 +6,30 @@ package pasosServer.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import pasosServer.ejb.AlarmaFacadeRemote;
 import pasosServer.ejb.ProtegidoFacadeRemote;
-import pasosServer.jspbeans.ProtegidoInfoBean;
+import pasosServer.jspbeans.AlarmasProtegidoBean;
+import pasosServer.model.Alarma;
 import pasosServer.model.Protegido;
 
 /**
  *
  * @author Juan Antonio
  */
-@WebServlet(name = "SearchServlet", urlPatterns = {"/SearchServlet"})
-public class SearchServlet extends HttpServlet {
+@WebServlet(name = "TablaAlarmasServlet", urlPatterns = {"/TablaAlarmasServlet"})
+public class TablaAlarmasServlet extends HttpServlet {
     @EJB
-    private ProtegidoFacadeRemote protegidoFacade;
+    private AlarmaFacadeRemote alarmaFacade;
+    
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,33 +40,15 @@ public class SearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.setContentType("text/html;charset=UTF-8");
-        //PrintWriter out = response.getWriter();
-        try {
-            String nombre=request.getParameter("nombre");
-            String apellidos=request.getParameter("apellidos");
-            //request.setAttribute("nombre", nombre);
-            //request.setAttribute("apellidos", apellidos);
-            //System.out.println(nombre+" "+apellidos);
-            Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
-            
-            if(protegido!=null){
-                System.out.println(protegido.getNombre());
-                ProtegidoInfoBean bean=new ProtegidoInfoBean();
-                bean.setProtegido(protegido);
-                //bean.setFoto(protegido.getImage());
-                HttpSession sesion=request.getSession(true);
-                sesion.setAttribute("foto", protegido.getFoto());
-                sesion.setAttribute("protegido", protegido);
-                request.setAttribute("ProtegidoInfoBean", bean);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarDatos.jsp");
-                dispatcher.forward(request, response);
-            }
-            
-            //System.out.println("hola");
-        } finally {            
-            //out.close();
-        }
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession sesion=request.getSession(true);
+        Protegido p = (Protegido) sesion.getAttribute("protegido");
+        List<Alarma> alarmas = alarmaFacade.findAlarmasByIdProtegido(p);
+        AlarmasProtegidoBean bean=new AlarmasProtegidoBean();
+        bean.setAlarmas(alarmas);
+        request.setAttribute("tablaAlarmasBean", bean);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/tablaAlarmas.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

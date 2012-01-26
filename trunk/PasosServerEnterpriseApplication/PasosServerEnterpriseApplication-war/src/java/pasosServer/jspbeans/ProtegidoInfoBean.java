@@ -13,7 +13,6 @@ import pasosServer.model.Protegido;
  */
 public class ProtegidoInfoBean {
     private Protegido protegido;
-    private Image foto;
     
     public ProtegidoInfoBean(){
         
@@ -33,18 +32,5 @@ public class ProtegidoInfoBean {
         this.protegido = protegido;
     }
 
-    /**
-     * @return the foto
-     */
-    public Image getFoto() {
-        return foto;
-    }
-
-    /**
-     * @param foto the foto to set
-     */
-    public void setFoto(Image foto) {
-        this.foto = foto;
-    }
 
 }

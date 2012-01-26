@@ -6,7 +6,6 @@ package pasosServer.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -15,18 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import pasosServer.ejb.ProtegidoFacadeRemote;
-import pasosServer.jspbeans.ProtegidoInfoBean;
-import pasosServer.model.Protegido;
 
 /**
  *
  * @author Juan Antonio
  */
-@WebServlet(name = "SearchServlet", urlPatterns = {"/SearchServlet"})
-public class SearchServlet extends HttpServlet {
-    @EJB
-    private ProtegidoFacadeRemote protegidoFacade;
+@WebServlet(name = "ImagenServlet", urlPatterns = {"/ImagenServlet"})
+public class ImagenServlet extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,32 +32,14 @@ public class SearchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //response.setContentType("text/html;charset=UTF-8");
-        //PrintWriter out = response.getWriter();
-        try {
-            String nombre=request.getParameter("nombre");
-            String apellidos=request.getParameter("apellidos");
-            //request.setAttribute("nombre", nombre);
-            //request.setAttribute("apellidos", apellidos);
-            //System.out.println(nombre+" "+apellidos);
-            Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
-            
-            if(protegido!=null){
-                System.out.println(protegido.getNombre());
-                ProtegidoInfoBean bean=new ProtegidoInfoBean();
-                bean.setProtegido(protegido);
-                //bean.setFoto(protegido.getImage());
-                HttpSession sesion=request.getSession(true);
-                sesion.setAttribute("foto", protegido.getFoto());
-                sesion.setAttribute("protegido", protegido);
-                request.setAttribute("ProtegidoInfoBean", bean);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarDatos.jsp");
-                dispatcher.forward(request, response);
-            }
-            
-            //System.out.println("hola");
-        } finally {            
-            //out.close();
-        }
+        //PrintWriter out = response.getWriter()
+            HttpSession sesion=request.getSession(true);
+            byte[] foto=(byte[]) sesion.getAttribute("foto");
+            response.setContentType("image/gif"); 
+            ServletOutputStream out = response.getOutputStream(); 
+            out.write(foto);
+            out.close();
+            sesion.removeAttribute("foto");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
