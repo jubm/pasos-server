@@ -31,5 +31,7 @@ public interface AlarmaFacadeRemote {
     int count();
 
     public List<Alarma> findAlarmasByIdProtegido(Protegido idprotegido);
+
+    public java.util.List findAlarmasGroupByMonth();
     
 }
