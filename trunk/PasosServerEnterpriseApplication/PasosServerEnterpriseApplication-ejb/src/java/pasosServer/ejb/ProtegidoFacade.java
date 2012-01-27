@@ -36,5 +36,15 @@ public class ProtegidoFacade extends AbstractFacade<Protegido> implements Proteg
                 .setParameter("apellidos", apellidos)
                 .getSingleResult();
     }
+    @Override
+    public Protegido findByimei(String imei){
+        return (Protegido) em.createQuery("SELECT p FROM Protegido p WHERE p.imei=:imei")
+                .setParameter("imei", imei)
+                .getSingleResult();
+    }
+    @Override
+    public void updateProtegido(Protegido protegido){
+       em.merge(protegido);             
+    }    
     
 }

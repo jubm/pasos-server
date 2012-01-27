@@ -28,5 +28,7 @@ public interface MaltratadorFacadeRemote {
     List<Maltratador> findRange(int[] range);
 
     int count();
+
+    public pasosServer.model.Maltratador findByimei(java.lang.String imei);   
     
 }

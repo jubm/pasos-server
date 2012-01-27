@@ -5,6 +5,7 @@
 package com.frame.JavaBeans;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  *
@@ -17,6 +18,15 @@ public class Frame implements Serializable{
     private String LN;
     private String LT;
     private String RD;
+    private BigDecimal ID;
+
+    public BigDecimal getID() {
+        return ID;
+    }
+
+    public void setID(BigDecimal ID) {
+        this.ID = ID;
+    }
     
     public Frame(){
         

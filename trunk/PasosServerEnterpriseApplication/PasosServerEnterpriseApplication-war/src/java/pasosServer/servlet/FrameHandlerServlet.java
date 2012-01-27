@@ -6,12 +6,23 @@ package pasosServer.servlet;
 
 import com.frame.JavaBeans.Frame;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pasosServer.ejb.AlarmaFacadeRemote;
+import pasosServer.ejb.MaltratadorFacadeRemote;
+import pasosServer.ejb.ProtegidoFacadeRemote;
+import pasosServer.model.Alarma;
+import pasosServer.model.Maltratador;
+import pasosServer.model.Protegido;
 
 /**
  *
@@ -19,6 +30,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 //@WebServlet(name = "FrameHandlerServlet", urlPatterns = {"/FrameHandlerServlet"})
 public class FrameHandlerServlet extends HttpServlet {
+    @EJB
+    private AlarmaFacadeRemote alarmaFacade;
+    @EJB
+    private MaltratadorFacadeRemote maltratadorFacade;
+    @EJB
+    private ProtegidoFacadeRemote protegidoFacade;
     
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -35,7 +52,6 @@ public class FrameHandlerServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         Frame frame = new Frame();
-        //HttpSession httpSession = request.getSession( true );
         RequestDispatcher requestDispatcher; 
         String trama = request.getParameter("trama");
         if (trama!=null && !trama.isEmpty()){
@@ -68,13 +84,36 @@ public class FrameHandlerServlet extends HttpServlet {
                    }
                }
             }            
-            //httpSession.setAttribute("trama", frame);
-            request.setAttribute("trama",frame);
-            
-        }
-          
-        requestDispatcher = getServletContext().getRequestDispatcher("/chat");
-        requestDispatcher.forward(request, response);
+            if (frame.getType().equals("TE")){
+                //Almacenar en BD                
+                Protegido protegido = protegidoFacade.findByimei(frame.getRD());
+                protegido.setLatitud(new BigInteger(frame.getLT()));                
+                protegido.setLongitud(new BigInteger(frame.getLN()));
+                protegidoFacade.updateProtegido(protegido);
+            }
+            if (frame.getType().equals("ZN") || frame.getType().equals("AU")){
+                Maltratador maltratador = maltratadorFacade.findByimei(frame.getRD());
+                Calendar calendar = Calendar.getInstance();                
+                calendar.setTime(new Date());
+                Date date = calendar.getTime();
+                Alarma alarma = new Alarma();
+                alarma.setFechaHora(date);
+                alarma.setIdMaltratador(maltratador);
+                alarma.setIdProtegido(maltratador.getIdProtegido());
+                if (frame.getType().equals("ZN")){
+                    alarma.setTipo(BigInteger.ZERO);
+                }else{
+                    alarma.setTipo(BigInteger.ONE);
+                }
+                alarmaFacade.create(alarma);
+                BigDecimal idAlarma = alarma.getIdAlarma();
+                frame.setID(idAlarma);
+                request.setAttribute("trama",frame);
+                requestDispatcher = getServletContext().getRequestDispatcher("/chat");
+                requestDispatcher.forward(request, response);
+            }
+        }      
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

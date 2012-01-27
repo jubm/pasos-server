@@ -45,15 +45,15 @@ public class SearchServlet extends HttpServlet {
             String nombre=request.getParameter("nombre");
             String apellidos=request.getParameter("apellidos");
             
-            List list=this.alarmaFacade.findAlarmasGroupByMonth();
+            /*List list=this.alarmaFacade.findAlarmasGroupByMonth();
             for(Object o:list){
                 Object[] tupla=(Object[])o;
                 Integer cont=(Integer)tupla[0];
                 Integer mes=(Integer)tupla[1]; 
                 System.out.println("Cont: "+cont+", Mes: "+mes);
-            }
+            }*/
            
-            /*Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
+            Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
             
             if(protegido!=null){
                 System.out.println(protegido.getNombre());
@@ -66,7 +66,7 @@ public class SearchServlet extends HttpServlet {
                 request.setAttribute("ProtegidoInfoBean", bean);
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarDatos.jsp");
                 dispatcher.forward(request, response);
-            }*/
+            }
         } finally {            
         }
     }

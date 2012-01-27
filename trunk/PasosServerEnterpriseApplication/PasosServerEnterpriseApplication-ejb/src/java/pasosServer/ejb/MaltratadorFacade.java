@@ -26,4 +26,11 @@ public class MaltratadorFacade extends AbstractFacade<Maltratador> implements Ma
         super(Maltratador.class);
     }
     
+   
+    @Override
+    public Maltratador findByimei(String imei){
+        return (Maltratador) em.createQuery("SELECT m FROM Maltratador m WHERE m.imei = :imei")
+                .setParameter("imei", imei)
+                .getSingleResult();
+    }    
 }
