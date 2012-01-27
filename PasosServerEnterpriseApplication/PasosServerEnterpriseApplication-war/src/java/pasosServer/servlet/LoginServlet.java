@@ -6,22 +6,29 @@ package pasosServer.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import pasosServer.ejb.OperadorFacade;
+import pasosServer.ejb.OperadorFacadeRemote;
+import pasosServer.model.Operador;
 
 /**
  *
- * @author Juan Antonio
+ * @author albertomateos
  */
-@WebServlet(name = "ImagenServlet", urlPatterns = {"/ImagenServlet"})
-public class ImagenServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
+public class LoginServlet extends HttpServlet {
+    @EJB
+    private OperadorFacadeRemote operadorFacade;
 
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -31,15 +38,27 @@ public class ImagenServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.setContentType("text/html;charset=UTF-8");
-        //PrintWriter out = response.getWriter()
-            HttpSession sesion=request.getSession(true);
-            byte[] foto=(byte[]) sesion.getAttribute("foto");
-            response.setContentType("image/gif"); 
-            ServletOutputStream out = response.getOutputStream(); 
-            out.write(foto);
-            out.close();
-            sesion.removeAttribute("foto");
+        String user = request.getParameter("username");
+        String password = request.getParameter("password");        
+        System.out.println("LOGIN: "+user+" - "+password+" - "+request.getParameter("action"));
+       
+        
+        try{
+            //hacer comprobación en la base de datos
+            /*Operador operador = this.operadorFacade.findByLoginAndPassword(user,password);
+            BigDecimal idOperador = operador.getIdOperador();
+            request.setAttribute("id", idOperador);*/
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/comet");
+            dispatcher.forward(request,response);
+        }catch(javax.ejb.EJBException e){
+            //se hace forward al jsp incluyendo reescritura de URL
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/loginError.jsp"));  
+        }catch(javax.persistence.NoResultException e){
+            //se hace forward al jsp incluyendo reescritura de URL
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/loginError.jsp"));  
+        }
+        
+               
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

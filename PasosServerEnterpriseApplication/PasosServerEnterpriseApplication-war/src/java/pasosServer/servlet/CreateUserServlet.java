@@ -4,6 +4,7 @@
  */
 package pasosServer.servlet;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,72 +53,114 @@ public class CreateUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            Integer tipo = Integer.parseInt(request.getParameter("tipo"));
-            if (tipo == 1){
-                String nombre = request.getParameter("nombre");
-                String apellidos = request.getParameter("apellidos");
-                String fecha = request.getParameter("fechanac");
-                Integer movil1 = Integer.parseInt(request.getParameter("telefono"));
-                BigInteger movil2 = BigInteger.valueOf(movil1);
-
-                String nombrec = request.getParameter("nombrec");
-                Integer movilpr = Integer.parseInt(request.getParameter("movil"));
-                BigInteger movilse = BigInteger.valueOf(movilpr);
-                String email = request.getParameter("email");
-                String nombrecs = request.getParameter("nombrecs");
-                Integer movila = Integer.parseInt(request.getParameter("movils"));
-                BigInteger movilb = BigInteger.valueOf(movila);
-                String emails = request.getParameter("emails");
-
-                SimpleDateFormat fechanac = new SimpleDateFormat("dd-MM-yyyy");
-                Date d = fechanac.parse(fecha);
-
-                Protegido protegido = new Protegido();
-                protegido.setNombre(nombre);
-                protegido.setApellidos(apellidos);
-                protegido.setFechaNacimiento(d);
-                protegido.setTelefonoMovil(movil2);
-
-                Contacto contacto = new Contacto();
-                contacto.setNombre(nombrec);
-                contacto.setTelefonoContacto(movilse);
-                contacto.setEmail(email);
-
-                contacto.setNombre(nombrecs);
-                contacto.setTelefonoContacto(movilb);
-                contacto.setEmail(emails);
 
 
-                this.protegidoFacade.create(protegido);
-                this.contactoFacade.create(contacto);
-            }else{
+                //Protegido
+                String nombreP = request.getParameter("nombreP");
+                String apellidosP = request.getParameter("apellidosP");
+                String fecha = request.getParameter("fechanacP");
+                System.out.println("OBTENIDO: "+nombreP+" "+apellidosP+" - "+fecha);
+                SimpleDateFormat fecha2 = new SimpleDateFormat("dd-MM-yyyy");
+                Date fechanacP = fecha2.parse(fecha);
                 
-                String nombrea = request.getParameter("nombrea");
-                String apellidosa = request.getParameter("apellidosa");
-                //String dispositivo = request.getParameter("dispositivo");
-                //String distancia = request.getParameter("distancia");
-                Integer dispositivop = Integer.parseInt(request.getParameter("dispositivo"));
-                BigInteger dispositivopr = BigInteger.valueOf(dispositivop);
-                Integer distanciap = Integer.parseInt(request.getParameter("distancia"));
-                BigInteger distanciapr = BigInteger.valueOf(distanciap);
+                String aux = request.getParameter("telefonoP");
+                Integer aux1 = Integer.parseInt(aux);
+                BigInteger telefonoP = BigInteger.valueOf(aux1);
+                
+                byte imagenP[] = request.getParameter("imagenP").getBytes(); 
+                
+                
+                //Contacto 1
+                /*String nombreC1 = request.getParameter("nombreC1");
+                String aux2 = request.getParameter("movilC1");
+                Integer aux3 = Integer.parseInt(aux2);
+                BigInteger movilC1 = BigInteger.valueOf(aux3);
+                String emailC1 = request.getParameter("emailC1");
+                
+                //Contacto 2
+                String nombreC2 = request.getParameter("nombreC2");
+                String aux4 = request.getParameter("movilC2");
+                Integer aux5 = Integer.parseInt(aux4);
+                BigInteger movilC2 = BigInteger.valueOf(aux5);
+                String emailC2 = request.getParameter("emailC2");*/
 
+
+                //Maltratador
+                String nombreA = request.getParameter("nombreA");
+                String apellidosA = request.getParameter("apellidosA");
+                String aux6 = request.getParameter("dispositivoA");   
+                Integer aux7 = Integer.parseInt(aux6);
+                BigInteger dispositivoA = BigInteger.valueOf(aux7);
+                String aux8 = request.getParameter("distanciaA");
+                Integer aux9 = Integer.parseInt(aux8);
+                BigInteger distanciaA = BigInteger.valueOf(aux9);
+                byte imagenA[] = request.getParameter("imagenA").getBytes();
+                
+                
+                // Creación del objeto protegido                
+                Protegido protegido = new Protegido();
+                protegido.setNombre(nombreP);
+                protegido.setApellidos(apellidosP);
+                protegido.setFechaNacimiento(fechanacP);
+                protegido.setTelefonoMovil(telefonoP);
+                protegido.setFoto(imagenP); //imagen
+                
+                
                 Maltratador maltratador = new Maltratador();
-                maltratador.setNombre(nombrea);
-                maltratador.setApellidos(apellidosa);
-                maltratador.setDispositivo(dispositivopr);
-                maltratador.setDistanciaAlejamiento(distanciapr);
-
+                    maltratador.setNombre(nombreA);
+                    maltratador.setApellidos(apellidosA);
+                    maltratador.setDispositivo(dispositivoA);
+                    maltratador.setDistanciaAlejamiento(distanciaA);
+                    maltratador.setFoto(imagenA); //imagen
+                    
+                //this.maltratadorFacade.create(maltratador);
+                this.protegidoFacade.create(protegido);
+                maltratador.setIdProtegido(protegido);
                 this.maltratadorFacade.create(maltratador);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarRespuesta.jsp");
-                dispatcher.forward(request, response);
-            }
-           
-        } finally {            
-            out.close();
-        }
+                //protegido.addMaltratador(maltratador);
+                //this.protegidoFacade.create(protegido);
+                
+                 
+                /*maltratador.setIdProtegido(protegido);
+                this.maltratadorFacade.create(maltratador);*
+                
+                
+                
+                // Creación de los objetos contactos
+                /*Contacto contacto1 = new Contacto();
+                contacto1.setNombre(nombreC1);
+                contacto1.setTelefonoContacto(movilC1);
+                contacto1.setEmail(emailC1);
+
+                Contacto contacto2 = new Contacto();
+                contacto2.setNombre(nombreC2);
+                contacto2.setTelefonoContacto(movilC2);
+                contacto2.setEmail(emailC2);*/
+                
+                //protegido.setContactoCollection(null);
+                
+                // Guardado de protegido y contactos en la base de datos
+                
+                //this.contactoFacade.create(contacto1);
+                //this.contactoFacade.create(contacto2);
+
+                
+                // Guardado del maltratado (si se ha introducido)
+                /*if(!nombreA.isEmpty() && !apellidosA.isEmpty() && dispositivoA != null && distanciaA != null){
+                    Maltratador maltratador = new Maltratador();
+                    maltratador.setNombre(nombreA);
+                    maltratador.setApellidos(apellidosA);
+                    maltratador.setDispositivo(dispositivoA);
+                    maltratador.setDistanciaAlejamiento(distanciaA);
+                    maltratador.setFoto(imagenA); //imagen
+                    //maltratador.setIdProtegido(protegido);
+                    
+                    this.maltratadorFacade.create(maltratador);
+                }*/
+                
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/respuestaCreateUser.jsp");
+            dispatcher.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -51,9 +51,13 @@ public class FrameHandlerServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        System.out.println("ENTRA SERVLET FRAME");
         Frame frame = new Frame();
         RequestDispatcher requestDispatcher; 
         String trama = request.getParameter("trama");
+        System.out.println("OBTENIDA TRAMA "+trama);
+        
         if (trama!=null && !trama.isEmpty()){
             String typeFrame = trama.substring(2,4);
             if (typeFrame.equals("ZN") || typeFrame.equals("TE")){
@@ -83,7 +87,8 @@ public class FrameHandlerServlet extends HttpServlet {
                        frame.setRD(trozo.substring(2));
                    }
                }
-            }            
+            }    
+            System.out.println("TIPO TRAMA: "+frame.getType());
             if (frame.getType().equals("TE")){
                 //Almacenar en BD                
                 Protegido protegido = protegidoFacade.findByimei(frame.getRD());
@@ -91,8 +96,9 @@ public class FrameHandlerServlet extends HttpServlet {
                 protegido.setLongitud(new BigInteger(frame.getLN()));
                 protegidoFacade.updateProtegido(protegido);
             }
-            if (frame.getType().equals("ZN") || frame.getType().equals("AU")){
-                Maltratador maltratador = maltratadorFacade.findByimei(frame.getRD());
+            if (frame.getType().equals("ZN") || frame.getType().startsWith("AU")){
+                System.out.println("ENTRAAAA!");
+                /*Maltratador maltratador = maltratadorFacade.findByimei(frame.getRD());
                 Calendar calendar = Calendar.getInstance();                
                 calendar.setTime(new Date());
                 Date date = calendar.getTime();
@@ -105,11 +111,12 @@ public class FrameHandlerServlet extends HttpServlet {
                 }else{
                     alarma.setTipo(BigInteger.ONE);
                 }
-                alarmaFacade.create(alarma);
+                //alarmaFacade.create(alarma);
                 BigDecimal idAlarma = alarma.getIdAlarma();
-                frame.setID(idAlarma);
+                frame.setID(idAlarma);*/
                 request.setAttribute("trama",frame);
-                requestDispatcher = getServletContext().getRequestDispatcher("/chat");
+                System.out.println("Se va a enviar trama: "+frame);
+                requestDispatcher = getServletContext().getRequestDispatcher("/comet");
                 requestDispatcher.forward(request, response);
             }
         }      

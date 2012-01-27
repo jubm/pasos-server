@@ -14,7 +14,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CometServlet</servlet-name>
-        <url-pattern>/chat</url-pattern>
+        <url-pattern>/comet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

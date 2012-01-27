@@ -1,112 +1,108 @@
-<%-- 
-    Document   : crearUsuarios
-    Created on : 26-ene-2012, 11:35:26
-    Author     : Gonzalo
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js" language="javascript"></script>
-        <script type="text/javascript" src="crearusuarios.js"> </script>
-    </head>
-    <body>
-        <div id="menu">
-        </div>
-        <div id="content" style=" width: 50%">
-            
-                <form name="alta">
-                
+<script type="text/javascript">
+    $("#enviar").click(function(){
                     
-                        
-                            <select name="tipouser" id="tipouser">
-                                <option value="1">Protegida</option>
-                                <option value="2">Agresor/Sospechoso</option>
-                                
-                            </select>
-                            <div id="protegida">
-                <fieldset>
-                    <legend align="right">Datos personales</legend>
+        //enviarDatos()
+        crearUsuario();
                     
-                    Nombre <br/>
-                    <input id="nombre" type="text" name="nombre" value=""/>
-                    <br />
-                    Apellidos <br />
-                    <input id="apellidos" type="text" name="apellidos" value=""/>
-                    <br />
-                    Fecha de nacimiento <br />
-                    <input id="fechanac" type="text" name="fechanac" value="" />
-                    <br />
-                    Numero de telefono <br />
-                    <input id="telefono" type="text" name="telefono"  value="" />
-                    <br />
-                    
-                </fieldset>
-                <fieldset>
-                    <legend align="right">FotografÃ­a de la vÃ­ctima</legend>
-                    Enlace imagen <br />
-                    <input type="file" name="file" id="file">
-                </fieldset>
-               
-                <fieldset>
-                    <legend align="right">Contacto 1</legend>
-                    Nombre <br/>
-                    <input id="nombrec" type="text" name="nombrec" value="" />
-                    <br/>
-                    TelÃ©fono <br/>
-                    <input id="movil" type="text" name="movil" value="" />
-                    <br/>
-                    Correo electrÃ³nico <br/>
-                    <input id="email" type="text" name="email" value="" />
-                    <br/>         
-                </fieldset>
-                  <fieldset>
-                    <legend align="right">Contacto 2</legend>
-                    Nombre <br/>
-                    <input id="nombrecs" type="text" name="nombrecs" value="" />
-                    <br/>
-                    TelÃ©fono <br/>
-                    <input id="movils" type="text" name="movils" value="" />
-                    <br/>
-                    Correo electrÃ³nico <br/>
-                    <input id="emails" type="text" name="emails" value="" />
-                    <br/>         
-                </fieldset>
+    });
                  
-                    
-                </div>      
-                
-                <div id="agresor" style="display:none">      
-                  <fieldset>
-                    <legend align="right">Datos Agresor</legend>
-                    Nombre <br/>
-                    <input id="nombrea" type="text" name="nombrea" value=""/>
-                    <br />
-                    Apellidos <br />
-                    <input id="apellidosa" type="text" name="apellidosa" value=""/>
-                    <br />
-                    NÃºmero dispositivo <br />
-                    <input id="dispositivo" type="text" name="dispositivo" value="" />
-                    <br />
-                    Distancia alejamiento vÃ­ctima <br />
-                    <input id="distancia" type="text" name="distancia"  value="" />
-                    <br />
-                    
-                </fieldset>
-            
-                <fieldset>
-                    <legend align="right">FotografÃ­a del agresor</legend>
-                    Enlace imagen <br />
-                    <input type="file" name="file2" id="file2">
-                </fieldset>
-                
+    $("#tipouser").change(function(){
+        var selector = $("#tipouser").val();
+        if(selector==1){
+            $("#protegida").show();
+            $("#agresor").hide();
+        }else{
+            $("#protegida").hide();
+            $("#agresor").show();
                         
-                </div>
-                    <input type="submit" name="enviar" id="enviar" value="Enviar"/>
-                </form>
-                
-        </div> 
-    </body>
-</html>
+        }
+    });
+</script>
+
+
+<form name="alta" enctype="multipart/form-data" target="upload_target" onsubmit="startUpload();">
+
+
+    <div id="protegida">
+        <fieldset>
+            <legend align="right">Datos personales</legend>
+
+            Nombre <br/>
+            <input id="nombreP" type="text" name="nombreP" value=""/>
+            <br />
+            Apellidos <br />
+            <input id="apellidosP" type="text" name="apellidosP" value=""/>
+            <br />
+            Fecha de nacimiento <br />
+            <input id="fechanacP" type="text" name="fechanacP" value="" />
+            <br />
+            Numero de telefono <br />
+            <input id="telefonoP" type="text" name="telefonoP"  value="" />
+            <br />
+
+        </fieldset>
+        <fieldset>
+            <legend align="right">Fotografía de la víctima</legend>
+            Enlace imagen <br />
+            <input type="file" name="file" id="imagenP">
+        </fieldset>
+
+        <fieldset>
+            <legend align="right">Contacto 1</legend>
+            Nombre <br/>
+            <input id="nombreC1" type="text" name="nombreC1" value="" />
+            <br/>
+            Teléfono <br/>
+            <input id="movilC1" type="text" name="movilC1" value="" />
+            <br/>
+            Correo electrónico <br/>
+            <input id="emailC1" type="text" name="emailC1" value="" />
+            <br/>         
+        </fieldset>
+        <fieldset>
+            <legend align="right">Contacto 2</legend>
+            Nombre <br/>
+            <input id="nombreC2" type="text" name="nombrecs" value="" />
+            <br/>
+            Teléfono <br/>
+            <input id="movilC2" type="text" name="movils" value="" />
+            <br/>
+            Correo electrónico <br/>
+            <input id="emailC2" type="text" name="emails" value="" />
+            <br/>         
+        </fieldset>
+
+
+    </div>      
+
+    <div id="agresor">      
+        <fieldset>
+            <legend align="right">Datos Agresor (Opcional)</legend>
+            Nombre <br/>
+            <input id="nombreA" type="text" name="nombrea" value=""/>
+            <br />
+            Apellidos <br />
+            <input id="apellidosA" type="text" name="apellidosa" value=""/>
+            <br />
+            Número dispositivo <br />
+            <input id="dispositivoA" type="text" name="dispositivo" value="" />
+            <br />
+            Distancia alejamiento víctima <br />
+            <input id="distanciaA" type="text" name="distancia"  value="" />
+            <br />
+
+        </fieldset>
+
+        <fieldset>
+            <legend align="right">Fotografía del agresor</legend>
+            Enlace imagen <br />
+            <input type="file" name="file2" id="imagenA">
+        </fieldset>
+
+
+    </div>
+    <input type="submit" name="enviar" id="enviar" value="Enviar"/>
+</form>
+
+</div>
+<iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>

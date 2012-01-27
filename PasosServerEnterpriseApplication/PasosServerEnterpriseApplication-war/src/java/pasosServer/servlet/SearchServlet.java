@@ -41,18 +41,10 @@ public class SearchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+
             String nombre=request.getParameter("nombre");
             String apellidos=request.getParameter("apellidos");
-            
-            /*List list=this.alarmaFacade.findAlarmasGroupByMonth();
-            for(Object o:list){
-                Object[] tupla=(Object[])o;
-                Integer cont=(Integer)tupla[0];
-                Integer mes=(Integer)tupla[1]; 
-                System.out.println("Cont: "+cont+", Mes: "+mes);
-            }*/
-           
+                       
             Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
             
             if(protegido!=null){
@@ -67,8 +59,6 @@ public class SearchServlet extends HttpServlet {
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarDatos.jsp");
                 dispatcher.forward(request, response);
             }
-        } finally {            
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
