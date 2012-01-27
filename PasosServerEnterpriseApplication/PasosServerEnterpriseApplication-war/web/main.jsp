@@ -25,12 +25,6 @@
         </div>
 
         <div id="content"></div>
-        <div id="alarma">
-            <div id="mapa"></div>
-            <p id="protegido"></p>
-            <p id="maltratador"></p>
-            <input type="button" id="atendido" name="atendido" title="Atendido"></input>
-        </div>
     <frameset>
 
         <iframe src ="comet?action=suscribe" id="iframe" name="iframeChat" width="100%" scrolling="auto">

@@ -22,7 +22,6 @@ $(document).ready(function(){
     });
     
     //$("#iframe").hide();
-    $("#alarma").hide();
     
     /*
      * EVENTO BOTÓN FINALIZACIÓN ATENCIÓN ALARMA
@@ -118,20 +117,6 @@ function stopUpload(success){
     document.getElementById('f1_upload_process').style.visibility = 'hidden';
     return true;   
 }
-
-function alarma(protegido,maltratador,lt,ln,tipo){
-    alert("alertaaaa");
-    $("#alarma").empty();
-    $("#protegido").append("Protegido/a: "+protegido);
-    if(tipo=="AU11"){
-        $("#maltratador").empty();
-    }else{
-        $("#maltratador").append("Maltratador/a: "+maltratador);
-    }
-    
-    $("#alarma").show();
-}
-
 
 function alarm(){
     alert("alarmaaaaa");
