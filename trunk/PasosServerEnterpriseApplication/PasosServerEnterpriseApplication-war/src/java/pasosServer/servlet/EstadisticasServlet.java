@@ -46,28 +46,23 @@ public class EstadisticasServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion=request.getSession(true);
+        
         String anio=request.getParameter("anio");
         //utputStream salida = response.getOutputStream();
-        
-        if(anio.equals("todos")){
-            List list = this.alarmaFacade.findAlarmasGroupByMonth();
-            JFreeChart chart = this.crearGraficoAlarmasPorMes(list);
-            sesion.setAttribute("grafico", chart);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/grafico.jsp");
-            dispatcher.forward(request, response);
-            System.out.println("Mando grafica todos años");
-        }
-        else{
-            List list = this.alarmaFacade.findAlarmasGroupByMonth(anio);
-            JFreeChart chart = this.crearGraficoAlarmasPorMes(list);
-            sesion.setAttribute("grafico", chart);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/grafico.jsp");
-            dispatcher.forward(request, response);
-            System.out.println("Mando grafica año concreto");
-        }
-        
-        //response.setContentType("image/jpeg");
+//        List list;
+//        if(anio.equals("todos")){
+//            list = this.alarmaFacade.findAlarmasGroupByMonth();
+//            
+//        }
+//        else{
+//            list = this.alarmaFacade.findAlarmasGroupByMonth(anio);
+//            
+//        }
+//        JFreeChart chart = this.crearGraficoAlarmasPorMes(list);
+           //sesion.setAttribute("grafico", chart);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/grafico.jsp?anio=" + anio);
+        dispatcher.forward(request, response);
+                //response.setContentType("image/jpeg");
         //OutputStream salida = response.getOutputStream();
         //List list = this.alarmaFacade.findAlarmasGroupByMonth();
         /*Object[] o1=new Object[2];
@@ -93,44 +88,7 @@ public class EstadisticasServlet extends HttpServlet {
         //salida.close();    
     }
     
-    private JFreeChart crearGraficoAlarmasPorMes(List list){
-        String[] months = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul",
-        "Ago", "Sep", "Oct", "Nov","Dic"};
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        Object[] ltuplas=new Object[12];
-        for(Object o:list){
-                Object[] tupla=(Object[])o;
-                BigDecimal mes=(BigDecimal)tupla[1]; 
-                int mesindice=mes.intValue()-1;
-                ltuplas[mesindice]=tupla;
-        }
-        for(int i=0; i<12; i++){
-            Object[] tupla=(Object[])ltuplas[i];
-            if(tupla!=null){
-                BigDecimal cont=(BigDecimal)tupla[0];
-                BigDecimal mes=(BigDecimal)tupla[1];
-                //System.out.println("Cont:"+cont+", Mes:"+mes);
-                dataset.setValue(cont.intValue(), "Alarmas", months[i]);
-            }
-            else{
-                dataset.setValue(0, "Alarmas", months[i]);
-            }
-        }
-        /*for(Object o:tuplas){
-            Object[] tupla=(Object[])o;
-            
-            if(o!=null){
-                BigDecimal cont=(BigDecimal)tupla[0];
-                BigDecimal mes=(BigDecimal)tupla[1];
-                dataset.setValue(cont.intValue(), "Alarmas", months[tuplas.indexOf(o)]);
-            }
-            else{
-                dataset.setValue(0, "Alarmas", months[tuplas.indexOf(o)]);
-            }
-        }*/
-        JFreeChart chart= ChartFactory.createBarChart("Alarmas recibidas por mes", "Meses", "Numero de alarmas", dataset, PlotOrientation.VERTICAL, false, true, false);
-        return chart;
-    }
+    
     
     
 

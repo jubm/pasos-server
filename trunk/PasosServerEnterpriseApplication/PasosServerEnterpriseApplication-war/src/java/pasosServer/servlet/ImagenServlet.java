@@ -7,6 +7,8 @@ package pasosServer.servlet;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import pasosServer.ejb.ProtegidoFacadeRemote;
+import pasosServer.model.Protegido;
 
 /**
  *
@@ -22,6 +26,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ImagenServlet", urlPatterns = {"/ImagenServlet"})
 public class ImagenServlet extends HttpServlet {
+    @EJB
+    private ProtegidoFacadeRemote protegidoFacade;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,13 +40,15 @@ public class ImagenServlet extends HttpServlet {
             throws ServletException, IOException {
         //response.setContentType("text/html;charset=UTF-8");
         //PrintWriter out = response.getWriter()
-            HttpSession sesion=request.getSession(true);
-            byte[] foto=(byte[]) sesion.getAttribute("foto");
+            BigDecimal bd = new BigDecimal(request.getParameter("id"));
+            Protegido p=this.protegidoFacade.find(bd);
+            //HttpSession sesion=request.getSession(true);
+            byte[] foto=(byte[]) p.getFoto();
             response.setContentType("image/gif"); 
             ServletOutputStream out = response.getOutputStream(); 
             out.write(foto);
             out.close();
-            sesion.removeAttribute("foto");
+            //sesion.removeAttribute("foto");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

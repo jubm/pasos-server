@@ -63,7 +63,7 @@ public class SearchServlet extends HttpServlet {
                 //bean.setFoto(protegido.getImage());
                 HttpSession sesion=request.getSession(true);
                 sesion.setAttribute("foto", protegido.getFoto());
-                sesion.setAttribute("protegido", protegido);
+                //sesion.setAttribute("protegido", protegido);
                 request.setAttribute("ProtegidoInfoBean", bean);
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/mostrarDatos.jsp");
                 dispatcher.forward(request, response);
