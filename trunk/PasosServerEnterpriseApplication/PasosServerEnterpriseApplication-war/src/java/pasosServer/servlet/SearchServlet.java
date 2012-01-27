@@ -6,6 +6,7 @@ package pasosServer.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -44,7 +45,15 @@ public class SearchServlet extends HttpServlet {
 
             String nombre=request.getParameter("nombre");
             String apellidos=request.getParameter("apellidos");
-                       
+            
+            /*List list=this.alarmaFacade.findAlarmasGroupByMonth();
+            for(Object o:list){
+                Object[] tupla=(Object[])o;
+                BigDecimal cont=(BigDecimal)tupla[0];
+                BigDecimal mes=(BigDecimal)tupla[1]; 
+                System.out.println("Cont: "+cont+", Mes: "+mes);
+            }*/
+           
             Protegido protegido=this.protegidoFacade.findProtegidoByNombreAndApellidos(nombre, apellidos);
             
             if(protegido!=null){
