@@ -30,5 +30,9 @@ public interface ProtegidoFacadeRemote {
     int count();
 
     public pasosServer.model.Protegido findProtegidoByNombreAndApellidos(java.lang.String nombre, java.lang.String apellidos);
+
+    public Protegido findByimei(String imei);
+
+    public void updateProtegido(pasosServer.model.Protegido protegido);
     
 }
