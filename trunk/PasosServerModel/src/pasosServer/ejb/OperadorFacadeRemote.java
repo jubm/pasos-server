@@ -22,7 +22,9 @@ public interface OperadorFacadeRemote {
     void remove(Operador operador);
 
     Operador find(Object id);
-
+    
+    Operador findByLoginAndPassword(String login, String pass);
+    
     List<Operador> findAll();
 
     List<Operador> findRange(int[] range);

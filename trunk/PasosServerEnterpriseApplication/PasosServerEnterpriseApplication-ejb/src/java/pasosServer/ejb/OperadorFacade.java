@@ -25,5 +25,12 @@ public class OperadorFacade extends AbstractFacade<Operador> implements Operador
     public OperadorFacade() {
         super(Operador.class);
     }
+
+    @Override
+    public Operador findByLoginAndPassword(String login, String pass) {
+        return (Operador) em.createQuery("SELECT o FROM Operador o WHERE o.login = :login AND o.password = :pass")
+                .setParameter("login", login).setParameter("pass", pass)
+                .getSingleResult();
+    }
     
 }

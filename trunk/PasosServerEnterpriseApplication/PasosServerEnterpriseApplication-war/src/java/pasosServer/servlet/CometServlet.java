@@ -43,7 +43,7 @@ public class CometServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        contextPath = config.getServletContext().getContextPath() + "/chat";
+        contextPath = config.getServletContext().getContextPath() + "/comet";
         CometEngine cometEngine = CometEngine.getEngine();
         CometContext context = cometEngine.register(contextPath);
         context.setExpirationDelay(-1);
@@ -65,15 +65,16 @@ public class CometServlet extends HttpServlet {
         Frame trama = (Frame)request.getAttribute("trama");
         CometEngine cometEngine = CometEngine.getEngine();
         CometContext cometContext = cometEngine.getCometContext(contextPath);
-
+        System.out.println("COMET: "+action);
         if (action != null) {
             if ("login".equals(action)) {
+                System.out.println("LOGINNNNN");
                 String username = request.getParameter("username");
                 request.getSession(true).setAttribute("username", username);                
-                response.sendRedirect("chat.html");
+                response.sendRedirect("main.jsp");
                 return;
             } 
-            else if ("openchat".equals(action)) {
+            else if ("suscribe".equals(action)) {
                 // For IE, Safari and Chrome, we must output some junk to enable
                 // streaming
                 for (int i = 0; i < 10; i++) {
@@ -82,7 +83,6 @@ public class CometServlet extends HttpServlet {
                 response.getWriter().flush();
                 response.setContentType("text/html");
                 String username = (String) request.getSession(true).getAttribute("username");
-                response.getWriter().println("<h2>Welcome " + username + " </h2>");
 
                 CometRequestHandler handler = new CometRequestHandler();
                 handler.clientIP = request.getRemoteAddr();
@@ -154,8 +154,14 @@ public class CometServlet extends HttpServlet {
             }
 
             }
+        System.out.println("trama: "+trama);
             if (trama!=null){
-                String codigo = "<script languaje='Javascript'>alarma();</script>";
+                String protegido="pepa";
+                String maltratador="pepe";
+                int lt=1;
+                int ln=1;
+                String tipo="AU11";
+                String codigo = "<script languaje='Javascript'></script>";
                 ClientInfo firstClientNotBusy = null;
                 for(ClientInfo clientInfo : clientInfos){
                     if (firstClientNotBusy==null && clientInfo.getHandlerState().equals(false)){
@@ -164,7 +170,10 @@ public class CometServlet extends HttpServlet {
                 }
                 if (firstClientNotBusy!=null){
                     firstClientNotBusy.setHandlerState(Boolean.TRUE);
+                    System.out.println("INYECTA");
                     cometContext.notify(codigo,CometEvent.NOTIFY,firstClientNotBusy.getCometHandler()); 
+                    
+
                 }
                 else {
                     isPendingMessage = true;

@@ -71,7 +71,7 @@ public class Maltratador implements Serializable {
     @Column(name = "IMEI")
     private String imei;
     @JoinColumn(name = "ID_PROTEGIDO", referencedColumnName = "ID_PROTEGIDO")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Protegido idProtegido;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMaltratador")
     private Collection<Alarma> alarmaCollection;
