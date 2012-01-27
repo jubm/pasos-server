@@ -32,6 +32,8 @@ public interface AlarmaFacadeRemote {
 
     public List<Alarma> findAlarmasByIdProtegido(Protegido idprotegido);
 
-    public java.util.List findAlarmasGroupByMonth();
+    public List findAlarmasGroupByMonth();
+
+    public List findAlarmasGroupByMonth(String anio);
 
 }
