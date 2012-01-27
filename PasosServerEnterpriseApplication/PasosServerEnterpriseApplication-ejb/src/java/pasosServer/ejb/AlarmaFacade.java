@@ -36,14 +36,25 @@ public class AlarmaFacade extends AbstractFacade<Alarma> implements AlarmaFacade
                 
     }
     
-    /*@Override
-    public List findAlarmasGroupByMonth(){
-        return em.createQuery("select count(a), a.fechaHora.month from Alarma a group by MONTH(a.fechaHora)").getResultList();
-        
-    }*/
-
     @Override
-    public List findAlarmasGroupByMonth() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List findAlarmasGroupByMonth(){
+        return em.createNativeQuery("select count(*) as cont, extract(month from al.fecha_hora) "
+                                    + "from alarma al "
+                                    + "group by extract(month from al.fecha_hora)"
+                                    + "order by extract(month from al.fecha_hora)")
+                .getResultList();
     }
+    
+    @Override
+    public List findAlarmasGroupByMonth(String anio){
+        return em.createNativeQuery("select count(*) as cont, extract(month from al.fecha_hora) "
+                                    + "from alarma al "
+                                    + "where extract(year from al.fecha_hora)="+anio
+                                    + "group by extract(month from al.fecha_hora)"
+                                    + "order by extract(month from al.fecha_hora)")
+                .getResultList();
+    }
+
+  
+    
 }
