@@ -192,5 +192,9 @@ ul#menu li a.current
 
 #iframe{
     position:relative;
-    top:50px;
+    float: right;
+    width: 800px;
+    height: 500px;
+    top:40px;
+    left: -20px;
 }
