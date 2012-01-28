@@ -87,11 +87,13 @@ function muestraUbicacionProtegida() {
     if (peticion.status == 200) {
       var coordenadas = eval('(' + peticion.responseText + ')');
       var prov = document.getElementById("latAltProtegida").value;
+      ln = ConvertDDToDMS(coordenadas[prov].lng);
+      lt = ConvertDDToDMS(coordenadas[prov].lat);
       document.getElementById("trama").value="*$TE"+
           "%26LD"+muestraLD()+
           "%26LH"+muestraLH()+
-          "%26LN"+dec2gms(coordenadas[prov].lng)+
-          "%26LT"+dec2gms(coordenadas[prov].lat)+
+          "%26LN"+ln+
+          "%26LT"+lt+
           "%26RD358987010052195";
       
        myLatlng = new google.maps.LatLng(coordenadas[prov].lat , coordenadas[prov].lng);
@@ -113,11 +115,13 @@ function muestraUbicacionMaltratador() {
     if (peticion2.status == 200) {
       var coordenadas = eval('(' + peticion2.responseText + ')');
       var prov = document.getElementById("latAltMaltratador").value;
+      ln = ConvertDDToDMS(coordenadas[prov].lng);
+      lt = ConvertDDToDMS(coordenadas[prov].lat);
       document.getElementById("trama").value="*$ZN"+
           "%26LD"+muestraLD()+
           "%26LH"+muestraLH()+
-          "%26LN"+dec2gms(coordenadas[prov].lng)+
-          "%26LT"+dec2gms(coordenadas[prov].lat)+
+          "%26LN"+ln+
+          "%26LT"+lt+
           "%26RD358987010052665";
       
       
@@ -137,8 +141,7 @@ function muestraUbicacionMaltratador() {
                 center: myLatlng,
                 radius: 200
         };
-      circle = new google.maps.Circle(populationOptions);
-        
+      circle = new google.maps.Circle(populationOptions);        
         j=1;
     }
   }
@@ -199,35 +202,55 @@ function muestraZonasMaltratador() {
  google.maps.event.addDomListener(window, 'load', initialize);
  
  
- function dec2gms(valor)
-{
-        
-        grados    = Math.abs(parseInt(valor));   
-        
-        minutos   = (Math.abs(valor) - grados) * 60;
-        diezMilesimas  = minutos;
-        minutos   = Math.abs(parseInt(minutos));
-        diezMilesimas  = Math.round((diezMilesimas - minutos) * 60 * 1000) ;
-        signo     = (valor > 0) ? 1 : 2;        
-        dd = (grados>10) ? grados:"0"+grados;
-        mm = (minutos>10) ? minutos:"0"+minutos;
-        var nnnn;
-        if (diezMilesimas < 10){
-            nnnn = "000" + diezMilesimas;
-        }
-        if (diezMilesimas < 100){
-            nnnn = "00" + diezMilesimas;
-        }
-        if (diezMilesimas < 1000){
-            nnnn = "0" + diezMilesimas;
-        }
-        if (diezMilesimas >= 1000){
-            nnnn =  diezMilesimas;
-        }        
-        gsm = signo+""+dd+ "" + mm+"" + nnnn ;
-        
-        return gsm;
-       
+// function dec2gms(valor)
+//{
+//        
+//        grados    = Math.abs(parseInt(valor));   
+//        
+//        minutos   = (parseInt(valor) - grados) * 60;
+//        diezMilesimas  = minutos;
+//        minutos   = Math.abs(parseInt(minutos));
+//        diezMilesimas  = Math.round((diezMilesimas - minutos) * 6000);
+//        signo     = (valor > 0) ? 1 : 2;        
+//        dd = (grados>10) ? grados:"0"+grados;
+//        mm = (minutos>10) ? minutos:"0"+minutos;        
+//        if (diezMilesimas < 10){
+//            nnnn = "000" + diezMilesimas;
+//        }
+//        if (diezMilesimas < 100){
+//            nnnn = "00" + diezMilesimas;
+//        }
+//        if (diezMilesimas < 1000){
+//            nnnn = "0" + diezMilesimas;
+//        }
+//        if (diezMilesimas >= 1000){
+//            nnnn =  diezMilesimas;
+//        }        
+//        gsm = signo+""+dd+ "" + mm+"" + nnnn;
+//        return gsm;      
+//}
+function ConvertDDToDMS(D){
+    dir = (D> 0) ? 1 : 2;
+    dd = 0|(D<0?D=-D:D);
+    mm = 0|D%1*60 ;
+    ssss =(0|D*60%1*6000);
+    if (dd<10){
+        dd = '0'+dd;        
+    }
+    if (mm <10){
+        mm = '0' + mm;
+    }
+    if (ssss<10){
+        ssss = ssss + '000';
+    }
+    if (ssss<100){
+        ssss = ssss +'00';
+    }
+    if (ssss <1000){
+        ssss =  ssss +'0';
+    }
+    trama = dir +""+dd+""+mm+""+ssss;
+    return trama;
 }
 
 function muestraLH()  

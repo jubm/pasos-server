@@ -2,6 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+var marker;
+
+var map;
 
 $(document).ready(function(){
    
@@ -21,7 +24,8 @@ $(document).ready(function(){
         $("#content").empty().append("<p>Estadisticas</p>"); 
     });
     
-    //$("#iframe").hide();
+    $("#iframe").hide();
+    //$("#mapa").hide();
     
     /*
      * EVENTO BOTÓN FINALIZACIÓN ATENCIÓN ALARMA
@@ -30,9 +34,10 @@ $(document).ready(function(){
         $.post('comet?action=atendido',function(data){});
         $("#alarma").hide();
     });
+    //Load map
+    initialize();    
      
 });
-
 
 /*
  * DECLARACIÓN DE FUNCIONES
@@ -118,6 +123,33 @@ function stopUpload(success){
     return true;   
 }
 
-function alarm(){
+function alarma(){   
     alert("alarmaaaaa");
+    parent.mostrarMarker(LT,LN);  
+}
+function mostrarMarker(LT,LN){
+        
+        myLatlng = new google.maps.LatLng(LT ,LN);
+        marker1 = new google.maps.Marker({
+        position: myLatlng, 
+              map: map
+        });
+        marker = marker1;
+}
+function borradoMarker(){    
+    markersArrayProtegida.setMap(null);         
+    
+}
+
+//Crear mapa
+function initialize() {
+    directionsDisplay = new google.maps.DirectionsRenderer();  
+    var myLatlng1 = new google.maps.LatLng(36.717696,-4.463711);   
+    var myOptions = {
+        zoom: 15,
+        center: myLatlng1,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("mapa"), myOptions);
+    directionsDisplay.setMap(map);
 }

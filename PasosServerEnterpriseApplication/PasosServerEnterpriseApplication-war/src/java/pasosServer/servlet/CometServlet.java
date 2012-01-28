@@ -11,7 +11,11 @@ import com.sun.grizzly.comet.CometEvent;
 import com.sun.grizzly.comet.CometHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,13 +23,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import pasosServer.ejb.AlarmaFacadeRemote;
+import pasosServer.ejb.MaltratadorFacadeRemote;
+import pasosServer.ejb.OperadorFacadeRemote;
 import pasosServer.model.Alarma;
+import pasosServer.model.Maltratador;
+import pasosServer.model.Operador;
 
 /**
  *
  * @author Jesus Ruiz Oliva
  */
 public class CometServlet extends HttpServlet {
+    @EJB
+    private OperadorFacadeRemote operadorFacade;
+    @EJB
+    private MaltratadorFacadeRemote maltratadorFacade;
     @EJB
     private AlarmaFacadeRemote alarmaFacade;
     private final static String JUNK = "<!-- Comet is a programming technique that enables web " +
@@ -82,29 +94,22 @@ public class CometServlet extends HttpServlet {
                 }
                 response.getWriter().flush();
                 response.setContentType("text/html");
-                String username = (String) request.getSession(true).getAttribute("username");
-
+                BigDecimal id = (BigDecimal) request.getSession().getAttribute("id");
+                String username = (String) request.getSession(true).getAttribute("username"); 
                 CometRequestHandler handler = new CometRequestHandler();
                 handler.clientIP = request.getRemoteAddr();
                 handler.attach(response.getWriter());
                 //Guardamos el manejador
-                ClientInfo clientInfo= new ClientInfo(Boolean.FALSE, username,(CometHandler) handler);
+                ClientInfo clientInfo= new ClientInfo(Boolean.FALSE,id, username,(CometHandler) handler);
                 clientInfos.add(clientInfo);             
                 cometContext.addCometHandler(handler);
-
+                System.out.println(isPendingMessage);
                 if (isPendingMessage){
-                    String codigo = "<script languaje='Javascript'>alarma();</script>";
-                    /*ClientInfo firstClientNotBusy = null;
-                    for(ClientInfo clientInfo : clientInfos){
-                        if (firstClientNotBusy==null && clientInfo.getHandlerState().equals(false)){
-                            firstClientNotBusy = clientInfo;
-                        }
-                    }
-                    if (firstClientNotBusy!=null){
-                        
-                        firstClientNotBusy.setHandlerState(Boolean.TRUE);
-                        cometContext.notify(codigo,CometEvent.NOTIFY,firstClientNotBusy.getCometHandler());
-                    }*/
+                    Operador operador = operadorFacade.find(clientInfo.getId());
+                    saveAlarm(listAlarmFrame.get(0), operador);
+                    String LT = "LT="+listAlarmFrame.get(0).getLT()+";";
+                    String LN = "LN="+listAlarmFrame.get(0).getLN()+";";                
+                    String codigo = "<script languaje='Javascript'>"+LT+LN+"alarma();</script>";                    
                     clientInfo.setHandlerState(Boolean.TRUE);
                     cometContext.notify(codigo,CometEvent.NOTIFY,clientInfo.getCometHandler());
                     listAlarmFrame.remove(0);
@@ -118,7 +123,11 @@ public class CometServlet extends HttpServlet {
                 for (ClientInfo clientInfo : clientInfos){
                     if (clientInfo.getUsuario().equals(username)){
                         if(isPendingMessage){
-                            String codigo = "<script languaje='Javascript'>alarma();</script>";
+                            Operador operador = operadorFacade.find(clientInfo.getId());
+                            saveAlarm(listAlarmFrame.get(0), operador);
+                            String LT = "LT="+listAlarmFrame.get(0).getLT()+";";
+                            String LN = "LN="+listAlarmFrame.get(0).getLN()+";";                
+                            String codigo = "<script languaje='Javascript'>"+LT+LN+"alarma();</script>";
                             clientInfo.setHandlerState(Boolean.TRUE);
                             cometContext.notify(codigo,CometEvent.NOTIFY,clientInfo.getCometHandler());
                             listAlarmFrame.remove(0);
@@ -128,21 +137,7 @@ public class CometServlet extends HttpServlet {
                         }
                      }
                 }
-                /*if (isPendingMessage){
-                    String codigo = "<script languaje='Javascript'>alarma();</script>";
-                    ClientInfo firstClientNotBusy = null;
-                    for(ClientInfo clientInfo : clientInfos){
-                        if (firstClientNotBusy==null && clientInfo.getHandlerState().equals(false)){
-                            firstClientNotBusy = clientInfo;
-                        }
-                    }
-                    if (firstClientNotBusy!=null){
-                        firstClientNotBusy.setHandlerState(Boolean.TRUE);
-                        cometContext.notify(codigo,CometEvent.NOTIFY,firstClientNotBusy.getCometHandler());
-                    }
-                    listAlarmFrame.remove(0);
-                    isPendingMessage = !listAlarmFrame.isEmpty();
-                }*/
+               
                 return;
             } else if ("logout".equals(action)){
                 String username = (String) request.getSession(true).getAttribute("username");
@@ -154,14 +149,11 @@ public class CometServlet extends HttpServlet {
             }
 
             }
-        System.out.println("trama: "+trama);
-            if (trama!=null){
-                String protegido="pepa";
-                String maltratador="pepe";
-                int lt=1;
-                int ln=1;
-                String tipo="AU11";
-                String codigo = "<script languaje='Javascript'></script>";
+            if (trama!=null){                
+                String LT = "LT="+trama.getLT()+";";
+                String LN = "LN="+trama.getLN()+";";
+                
+                String codigo = "<script languaje='Javascript'>"+LT+LN+"alarma();</script>";
                 ClientInfo firstClientNotBusy = null;
                 for(ClientInfo clientInfo : clientInfos){
                     if (firstClientNotBusy==null && clientInfo.getHandlerState().equals(false)){
@@ -169,10 +161,10 @@ public class CometServlet extends HttpServlet {
                     }
                 }
                 if (firstClientNotBusy!=null){
+                    Operador operador = operadorFacade.find(firstClientNotBusy.getId());
+                    saveAlarm(trama, operador);
                     firstClientNotBusy.setHandlerState(Boolean.TRUE);
-                    System.out.println("INYECTA");
-                    cometContext.notify(codigo,CometEvent.NOTIFY,firstClientNotBusy.getCometHandler()); 
-                    
+                    cometContext.notify(codigo,CometEvent.NOTIFY,firstClientNotBusy.getCometHandler());                    
 
                 }
                 else {
@@ -198,11 +190,7 @@ public class CometServlet extends HttpServlet {
         public void onEvent(CometEvent event) throws IOException {
             try {
 
-                /*if (firstServlet != -1 && this.hashCode() != firstServlet) {
-                    event.getCometContext().notify("User " + clientIP + " is getting a new message.<br/>", CometEvent.NOTIFY,
-                            firstServlet);
-                }*/
-                if (event.getType() != CometEvent.READ) {
+               if (event.getType() != CometEvent.READ) {
                     printWriter.println(event.attachment());
                     printWriter.flush();
                 }
@@ -238,12 +226,22 @@ public class CometServlet extends HttpServlet {
     public class ClientInfo{        
         private Boolean handlerState;
         private String usuario;
+        private BigDecimal id;
+
+        public BigDecimal getId() {
+            return id;
+        }
+
+        public void setId(BigDecimal id) {
+            this.id = id;
+        }
         private CometHandler cometHandler;
        
-        public ClientInfo(Boolean handlerState,String usuario,CometHandler cometHandler){
+        public ClientInfo(Boolean handlerState,BigDecimal id,String usuario,CometHandler cometHandler){
             this.handlerState = handlerState;
             this.usuario = usuario;            
             this.cometHandler = cometHandler;
+            this.id=id;
         }
         public Boolean getHandlerState() {
             return handlerState;
@@ -271,4 +269,21 @@ public class CometServlet extends HttpServlet {
         
         
     }
+        public void saveAlarm(Frame frame, Operador operador){
+                Maltratador maltratador = maltratadorFacade.findByimei(frame.getRD());
+                Calendar calendar = Calendar.getInstance();                
+                calendar.setTime(new Date());
+                Date date = calendar.getTime();
+                Alarma alarma = new Alarma();
+                alarma.setIdOperador(operador);
+                alarma.setFechaHora(date);
+                alarma.setIdMaltratador(maltratador);
+                alarma.setIdProtegido(maltratador.getIdProtegido());
+                if (frame.getType().equals("ZN")){
+                    alarma.setTipo(BigInteger.ZERO);
+                }else{
+                    alarma.setTipo(BigInteger.ONE);
+                }
+                alarmaFacade.create(alarma);
+        }
 }
