@@ -15,7 +15,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -25,15 +27,21 @@ import javax.servlet.http.HttpServletResponse;
 import pasosServer.ejb.AlarmaFacadeRemote;
 import pasosServer.ejb.MaltratadorFacadeRemote;
 import pasosServer.ejb.OperadorFacadeRemote;
+import pasosServer.ejb.ProtegidoFacade;
+import pasosServer.ejb.ProtegidoFacadeRemote;
 import pasosServer.model.Alarma;
+import pasosServer.model.Contacto;
 import pasosServer.model.Maltratador;
 import pasosServer.model.Operador;
+import pasosServer.model.Protegido;
 
 /**
  *
  * @author Jesus Ruiz Oliva
  */
 public class CometServlet extends HttpServlet {
+    @EJB
+    private ProtegidoFacadeRemote protegidoFacade;
     @EJB
     private OperadorFacadeRemote operadorFacade;
     @EJB
@@ -106,10 +114,10 @@ public class CometServlet extends HttpServlet {
                 System.out.println(isPendingMessage);
                 if (isPendingMessage){
                     Operador operador = operadorFacade.find(clientInfo.getId());
-                    saveAlarm(listAlarmFrame.get(0), operador);
+                    String info = saveAlarm(listAlarmFrame.get(0), operador);
                     String LT = "LT="+listAlarmFrame.get(0).getLT()+";";
                     String LN = "LN="+listAlarmFrame.get(0).getLN()+";";                
-                    String codigo = "<script languaje='Javascript'>"+LT+LN+"alarma();</script>";                    
+                    String codigo = "<script languaje='Javascript'>"+info+LT+LN+"alarma();</script>";                    
                     clientInfo.setHandlerState(Boolean.TRUE);
                     cometContext.notify(codigo,CometEvent.NOTIFY,clientInfo.getCometHandler());
                     listAlarmFrame.remove(0);
@@ -124,10 +132,10 @@ public class CometServlet extends HttpServlet {
                     if (clientInfo.getUsuario().equals(username)){
                         if(isPendingMessage){
                             Operador operador = operadorFacade.find(clientInfo.getId());
-                            saveAlarm(listAlarmFrame.get(0), operador);
+                            String info = saveAlarm(listAlarmFrame.get(0), operador);
                             String LT = "LT="+listAlarmFrame.get(0).getLT()+";";
                             String LN = "LN="+listAlarmFrame.get(0).getLN()+";";                
-                            String codigo = "<script languaje='Javascript'>"+LT+LN+"alarma();</script>";
+                            String codigo = "<script languaje='Javascript'>"+info+LT+LN+"alarma();</script>";
                             clientInfo.setHandlerState(Boolean.TRUE);
                             cometContext.notify(codigo,CometEvent.NOTIFY,clientInfo.getCometHandler());
                             listAlarmFrame.remove(0);
@@ -153,7 +161,7 @@ public class CometServlet extends HttpServlet {
                 String LT = "LT="+trama.getLT()+";";
                 String LN = "LN="+trama.getLN()+";";
                 
-                String codigo = "<script languaje='Javascript'>"+LT+LN+"alarma();</script>";
+                
                 ClientInfo firstClientNotBusy = null;
                 for(ClientInfo clientInfo : clientInfos){
                     if (firstClientNotBusy==null && clientInfo.getHandlerState().equals(false)){
@@ -162,7 +170,9 @@ public class CometServlet extends HttpServlet {
                 }
                 if (firstClientNotBusy!=null){
                     Operador operador = operadorFacade.find(firstClientNotBusy.getId());
-                    saveAlarm(trama, operador);
+                    String info = saveAlarm(trama, operador);
+                    System.out.println(info);
+                    String codigo = "<script languaje='Javascript'>"+info+LT+LN+"alarma();</script>";
                     firstClientNotBusy.setHandlerState(Boolean.TRUE);
                     cometContext.notify(codigo,CometEvent.NOTIFY,firstClientNotBusy.getCometHandler());                    
 
@@ -269,21 +279,61 @@ public class CometServlet extends HttpServlet {
         
         
     }
-        public void saveAlarm(Frame frame, Operador operador){
-                Maltratador maltratador = maltratadorFacade.findByimei(frame.getRD());
+        public String saveAlarm(Frame frame, Operador operador){
+                Alarma alarma = new Alarma();
+                Maltratador maltratador;
+                Protegido protegido;
+                String info="";
+                if(frame.getType().equals("ZN")){
+                    info= info + "<p>Tipo de alarma: "+frame.getType()+"</p><br/>";
+                    maltratador = maltratadorFacade.findByimei(frame.getRD());
+                    info= info + "<p>Maltratador: "+maltratador.getNombre() + " " +maltratador.getApellidos()+"</p><br/>";
+                    info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p><br/>";
+                    info= info + "<p>Protegida: "+maltratador.getIdProtegido().getNombre() + " " +maltratador.getIdProtegido().getApellidos()+"</p><br/>";
+                    info= info + "<p>Movil: "+maltratador.getIdProtegido().getTelefonoMovil()+"</p><br/>";
+                    /*Collection<Contacto> contactoCollection = maltratador.getIdProtegido().getContactoCollection();
+                    for (Contacto c: contactoCollection){
+                        info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p><br/>";
+                    }*/
+                    alarma.setIdMaltratador(maltratador);
+                    alarma.setIdProtegido(maltratador.getIdProtegido());
+                }else{
+                    info= info + "<p>Tipo de alarma: "+frame.getType()+"</p><br/>";
+                    protegido = protegidoFacade.findByimei(frame.getRD());
+                    info= info + "<p>Protegido: "+protegido.getNombre() + " " +protegido.getApellidos()+"</p><br/>";
+                    info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p><br/>";
+                    info= info + "<p>Movil: "+protegido.getTelefonoMovil()+"</p><br/>";
+                    /*Collection<Maltratador> maltratadors = protegido.getMaltratadorCollection();
+                    for (Maltratador m: maltratadors){
+                        info= info + "<p>Maltratador: "+m.getNombre()+" "+m.getApellidos()+"</p><br/>";
+                    }                
+                   
+                    Collection<Contacto> contactoCollection = protegido.getContactoCollection();
+                    for (Contacto c: contactoCollection){
+                        info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p><br/>";
+                    }*/
+                    
+                    protegido = protegidoFacade.findByimei(frame.getRD());
+                    alarma.setIdProtegido(protegido);
+                    Collection<Maltratador> maltratadorCollection = protegido.getMaltratadorCollection();
+                    for (Maltratador m: maltratadorCollection){
+                        alarma.setIdMaltratador(m);
+                    }                    
+                }
+                
                 Calendar calendar = Calendar.getInstance();                
                 calendar.setTime(new Date());
                 Date date = calendar.getTime();
-                Alarma alarma = new Alarma();
                 alarma.setIdOperador(operador);
                 alarma.setFechaHora(date);
-                alarma.setIdMaltratador(maltratador);
-                alarma.setIdProtegido(maltratador.getIdProtegido());
                 if (frame.getType().equals("ZN")){
                     alarma.setTipo(BigInteger.ZERO);
                 }else{
                     alarma.setTipo(BigInteger.ONE);
                 }
                 alarmaFacade.create(alarma);
+                info = "info= '"+info+"';";                
+                return info;
         }
+        
 }
