@@ -6,6 +6,7 @@ package pasosServer.model;
 
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -244,4 +245,5 @@ public class Protegido implements Serializable {
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
+
 }
