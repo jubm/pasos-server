@@ -12,6 +12,8 @@ $(document).ready(function(){
     * EVENTOS MENU
     */
 
+    $("#iframe").hide();
+    
     $("#menuBuscar").click(function(){
         $("#content").load("http://localhost:8080/PasosServerEnterpriseApplication-war/buscarProtegido.jsp");
     });
@@ -24,10 +26,11 @@ $(document).ready(function(){
         $("#content").load("http://localhost:8080/PasosServerEnterpriseApplication-war/estadisticas.jsp");
     });
     
-    $("#iframe").hide();
-    //$("#mapa").hide();
-    //$("#mapa").hide();
+    $("#desconectar").click(function(){
+        $.post("comet?action=logout");
+    });
     
+        
     /*
      * EVENTO BOTÓN FINALIZACIÓN ATENCIÓN ALARMA
      */
@@ -36,7 +39,8 @@ $(document).ready(function(){
         $("#alarma").hide();
     });
     //Load map
-    initialize();    
+    initialize(); 
+    $("#mapa").hide();
      
 });
 
@@ -119,39 +123,6 @@ function crearUsuario(){
 
 function alarma(){
     alert("alarmaaaaa");
-    parent.mostrarMarker(LT,LN);  
-}
-function mostrarMarker(LT,LN){
-        
-        myLatlng = new google.maps.LatLng(LT ,LN);
-        marker1 = new google.maps.Marker({
-        position: myLatlng, 
-              map: map
-        });
-        marker = marker1;
-}
-function borradoMarker(){    
-    markersArrayProtegida.setMap(null);         
-    
-}
-
-//Crear mapa
-function initialize() {
-    directionsDisplay = new google.maps.DirectionsRenderer();  
-    var myLatlng1 = new google.maps.LatLng(36.717696,-4.463711);   
-    var myOptions = {
-        zoom: 15,
-        center: myLatlng1,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    map = new google.maps.Map(document.getElementById("mapa"), myOptions);
-    directionsDisplay.setMap(map);
-}
-
-function alarma(){   
-    alert("alarmaaaaa");
-    //$("#iframe").show();
-    $("#alarma").empty().append(info);
     parent.mostrarMarker(LT,LN);  
 }
 function mostrarMarker(LT,LN){

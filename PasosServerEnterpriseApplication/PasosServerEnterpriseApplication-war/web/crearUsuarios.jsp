@@ -1,10 +1,14 @@
 <script type="text/javascript">
+    $("#agresor").hide();
+    
     $("#enviar").click(function(){
                     
         //enviarDatos()
         crearUsuario();
                     
     });
+    
+    
                  
     $("#tipouser").change(function(){
         var selector = $("#tipouser").val();
@@ -20,13 +24,15 @@
 </script>
 
 
-    <select name="tipouser" id="tipouser">
-        <option value="1">Protegida</option>
-        <option value="2">Agresor/Sospechoso</option>
+<select name="tipouser" id="tipouser">
+    <option value="1">Protegida</option>
+    <option value="2">Agresor/Sospechoso</option>
 
-    </select>
-
+</select>
+<center>
     <div id="protegida">
+
+
         <fieldset>
             <legend align="right">Datos personales</legend>
 
@@ -47,38 +53,13 @@
             <br />
 
         </fieldset>
+        </li>
 
+    </div>  
+
+    <div id="agresor">  
         <fieldset>
-            <legend align="right">Contacto 1</legend>
-            Nombre <br/>
-            <input id="nombreC1" type="text" name="nombreC1" value="" />
-            <br/>
-            Teléfono <br/>
-            <input id="movilC1" type="text" name="movilC1" value="" />
-            <br/>
-            Correo electrónico <br/>
-            <input id="emailC1" type="text" name="emailC1" value="" />
-            <br/>         
-        </fieldset>
-        <fieldset>
-            <legend align="right">Contacto 2</legend>
-            Nombre <br/>
-            <input id="nombreC2" type="text" name="nombrecs" value="" />
-            <br/>
-            Teléfono <br/>
-            <input id="movilC2" type="text" name="movils" value="" />
-            <br/>
-            Correo electrónico <br/>
-            <input id="emailC2" type="text" name="emails" value="" />
-            <br/>         
-        </fieldset>
-
-
-    </div>      
-
-    <div id="agresor">      
-        <fieldset>
-            <legend align="right">Datos Agresor (Opcional)</legend>
+            <legend align="right">Datos Agresor</legend>
             Nombre <br/>
             <input id="nombreA" type="text" name="nombrea" value=""/>
             <br />
@@ -96,8 +77,7 @@
             <br />
         </fieldset>
 
-
     </div>
     <input type="submit" name="enviar" id="enviar" value="Enviar"/>
-
+</center>
 </div>

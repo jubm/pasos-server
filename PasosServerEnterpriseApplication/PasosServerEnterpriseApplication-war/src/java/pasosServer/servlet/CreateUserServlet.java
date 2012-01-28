@@ -5,6 +5,8 @@
 package pasosServer.servlet;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -70,7 +72,6 @@ public class CreateUserServlet extends HttpServlet {
             Integer aux1 = Integer.parseInt(aux);
             BigInteger telefonoP = BigInteger.valueOf(aux1);
             String imeiP = request.getParameter("imeiP");
-
             // Creación del objeto protegido                
             Protegido protegido = new Protegido();
             protegido.setNombre(nombreP);
@@ -78,7 +79,6 @@ public class CreateUserServlet extends HttpServlet {
             protegido.setFechaNacimiento(fechanacP);
             protegido.setTelefonoMovil(telefonoP);
             protegido.setImei(imeiP);
-            
             System.out.println("Se va a guardar el protegido: " + protegido.getNombre() + " - " + protegido.getApellidos());
             this.protegidoFacade.create(protegido);
 

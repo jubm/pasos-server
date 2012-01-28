@@ -9,26 +9,35 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/css" src="css/estilo.css"></script>
+        <LINK href="css/estilo.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/funciones.js"></script>
         <title>paSOS - login</title>
     </head>
     <body>
-        <center>
-        <h1>Login</h1>
+    <center>
+
+            <div id="title">
+                pa<span id="sos" name="sos">SoS</span>
+            </div>
+        <br></br>
         <form ACTION="LoginServlet" METHOD="POST">
-         <table BORDER=0 WIDTH="50%" >       
-        <tr> 
-            <td> <b>Usuario </b> </td>
-            <td> <input TYPE="TEXT" NAME="username" SIZE="20" MAXLENGTH="20"> </td> </tr>
-        <tr>
-            <td> <b> Contrase&ntilde;a:</b> </td> 
-            <td> <input TYPE="PASSWORD" NAME="password"> </td>
-        </tr> 
-        </table> 
-        <input type="hidden" name="action" value="login"/>    
-        <input TYPE="SUBMIT" NAME="Entrar" VALUE="Entrar"> </form>
-        </center>
-    </body>
+
+            <fieldset id="form">
+                <legend>Introduzca sus datos de usuario</legend>
+                <ol>
+                    <li>
+                        <label for="username">Usuario: </label>
+                        <input TYPE="TEXT" NAME="username">
+                    </li>
+                    <li>
+                        <label for="password">Contrase&ntilde;a:</label>
+                        <span align="center"><input TYPE="PASSWORD" NAME="password"></span>
+                    </li>
+                </ol>
+            </fieldset>
+            <input type="hidden" name="action" value="login"/>    
+            <input class="btn" TYPE="SUBMIT" NAME="Entrar" VALUE="Entrar"> </form>
+    </center>
+</body>
 </html>

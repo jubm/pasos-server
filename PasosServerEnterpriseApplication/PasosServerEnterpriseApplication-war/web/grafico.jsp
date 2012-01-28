@@ -6,4 +6,4 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<img src="http://localhost:8080/PasosServerEnterpriseApplication-war/GraficoServlet?anio=${param.anio}" id="foto"/>
+<img align="center" src="http://localhost:8080/PasosServerEnterpriseApplication-war/GraficoServlet?anio=${param.anio}" id="foto"/>
