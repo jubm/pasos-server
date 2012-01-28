@@ -32,6 +32,7 @@ $(document).ready(function(){
     
     $("#desconectar").click(function(){
         $.post("comet?action=logout");
+        $(document).load("index.jsp");
     });
     
         
