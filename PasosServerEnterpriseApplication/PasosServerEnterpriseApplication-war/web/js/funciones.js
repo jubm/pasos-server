@@ -125,7 +125,7 @@ function stopUpload(success){
 
 function alarma(){   
     alert("alarmaaaaa");
-    $("#iframe").show();
+    //$("#iframe").show();
     //$("#iframe").empty().append(info);
     parent.mostrarMarker(LT,LN);  
 }
