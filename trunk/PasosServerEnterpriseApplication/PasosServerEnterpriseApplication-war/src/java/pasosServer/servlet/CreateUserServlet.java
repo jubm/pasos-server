@@ -7,6 +7,7 @@ package pasosServer.servlet;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException; //agregado para la fecha
 import java.text.SimpleDateFormat;
@@ -34,6 +35,7 @@ import pasosServer.model.Protegido;
  */
 @WebServlet(name = "CreateUserServlet", urlPatterns = {"/CreateUserServlet"})
 public class CreateUserServlet extends HttpServlet {
+
     @EJB
     private ContactoFacadeRemote contactoFacade;
     @EJB
@@ -54,112 +56,136 @@ public class CreateUserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
 
+        String tipo = request.getParameter("tipo");
+        if (tipo.equals("1")) { // GUARDAR PROTEGIDO
+            //Protegido
+            String nombreP = request.getParameter("nombreP");
+            String apellidosP = request.getParameter("apellidosP");
+            String fecha = request.getParameter("fechanacP");
+            System.out.println("OBTENIDO: " + nombreP + " " + apellidosP + " - " + fecha);
+            SimpleDateFormat fecha2 = new SimpleDateFormat("dd-MM-yyyy");
+            Date fechanacP = fecha2.parse(fecha);
 
-                //Protegido
-                String nombreP = request.getParameter("nombreP");
-                String apellidosP = request.getParameter("apellidosP");
-                String fecha = request.getParameter("fechanacP");
-                System.out.println("OBTENIDO: "+nombreP+" "+apellidosP+" - "+fecha);
-                SimpleDateFormat fecha2 = new SimpleDateFormat("dd-MM-yyyy");
-                Date fechanacP = fecha2.parse(fecha);
-                
-                String aux = request.getParameter("telefonoP");
-                Integer aux1 = Integer.parseInt(aux);
-                BigInteger telefonoP = BigInteger.valueOf(aux1);
-                
-                byte imagenP[] = request.getParameter("imagenP").getBytes(); 
-                
-                
-                //Contacto 1
+            String aux = request.getParameter("telefonoP");
+            Integer aux1 = Integer.parseInt(aux);
+            BigInteger telefonoP = BigInteger.valueOf(aux1);
+            String imeiP = request.getParameter("imeiP");
+
+            // Creación del objeto protegido                
+            Protegido protegido = new Protegido();
+            protegido.setNombre(nombreP);
+            protegido.setApellidos(apellidosP);
+            protegido.setFechaNacimiento(fechanacP);
+            protegido.setTelefonoMovil(telefonoP);
+            protegido.setImei(imeiP);
+            
+            System.out.println("Se va a guardar el protegido: " + protegido.getNombre() + " - " + protegido.getApellidos());
+            this.protegidoFacade.create(protegido);
+
+        } else if (tipo.equals("2")) { // GUARDAR MALTRATADOR
+
+            //Maltratador
+            String nombreA = request.getParameter("nombreA");
+            String apellidosA = request.getParameter("apellidosA");
+            String aux6 = request.getParameter("dispositivoA");
+            Integer aux7 = Integer.parseInt(aux6);
+            BigInteger dispositivoA = BigInteger.valueOf(aux7);
+            String aux8 = request.getParameter("distanciaA");
+            Integer aux9 = Integer.parseInt(aux8);
+            BigInteger distanciaA = BigInteger.valueOf(aux9);
+            String imeiA = request.getParameter("imeiA");
+            
+            System.out.println("OBTENIDO: " + nombreA + " " + apellidosA);
+
+
+            Maltratador maltratador = new Maltratador();
+            maltratador.setNombre(nombreA);
+            maltratador.setApellidos(apellidosA);
+            maltratador.setDispositivo(dispositivoA);
+            maltratador.setDistanciaAlejamiento(distanciaA);
+            maltratador.setImei(imeiA);
+            
+            Protegido p = this.protegidoFacade.findProtegidoByNombreAndApellidos("pepe", "perez");
+            this.maltratadorFacade.createMaltratador(maltratador, p.getIdProtegido());
+            /*maltratador.setIdProtegido(p);
+            System.out.println("Se va a guardar el protegido: " + maltratador.getNombre() + " - " + maltratador.getApellidos());
+            this.maltratadorFacade.create(maltratador);*/
+
+        }
+
+        //Contacto 1
                 /*String nombreC1 = request.getParameter("nombreC1");
-                String aux2 = request.getParameter("movilC1");
-                Integer aux3 = Integer.parseInt(aux2);
-                BigInteger movilC1 = BigInteger.valueOf(aux3);
-                String emailC1 = request.getParameter("emailC1");
-                
-                //Contacto 2
-                String nombreC2 = request.getParameter("nombreC2");
-                String aux4 = request.getParameter("movilC2");
-                Integer aux5 = Integer.parseInt(aux4);
-                BigInteger movilC2 = BigInteger.valueOf(aux5);
-                String emailC2 = request.getParameter("emailC2");*/
+        String aux2 = request.getParameter("movilC1");
+        Integer aux3 = Integer.parseInt(aux2);
+        BigInteger movilC1 = BigInteger.valueOf(aux3);
+        String emailC1 = request.getParameter("emailC1");
+        
+        //Contacto 2
+        String nombreC2 = request.getParameter("nombreC2");
+        String aux4 = request.getParameter("movilC2");
+        Integer aux5 = Integer.parseInt(aux4);
+        BigInteger movilC2 = BigInteger.valueOf(aux5);
+        String emailC2 = request.getParameter("emailC2");*/
 
 
-                //Maltratador
-                String nombreA = request.getParameter("nombreA");
-                String apellidosA = request.getParameter("apellidosA");
-                String aux6 = request.getParameter("dispositivoA");   
-                Integer aux7 = Integer.parseInt(aux6);
-                BigInteger dispositivoA = BigInteger.valueOf(aux7);
-                String aux8 = request.getParameter("distanciaA");
-                Integer aux9 = Integer.parseInt(aux8);
-                BigInteger distanciaA = BigInteger.valueOf(aux9);
-                byte imagenA[] = request.getParameter("imagenA").getBytes();
-                
-                
-                // Creación del objeto protegido                
-                Protegido protegido = new Protegido();
-                protegido.setNombre(nombreP);
-                protegido.setApellidos(apellidosP);
-                protegido.setFechaNacimiento(fechanacP);
-                protegido.setTelefonoMovil(telefonoP);
-                protegido.setFoto(imagenP); //imagen
-                
-                
-                Maltratador maltratador = new Maltratador();
-                    maltratador.setNombre(nombreA);
-                    maltratador.setApellidos(apellidosA);
-                    maltratador.setDispositivo(dispositivoA);
-                    maltratador.setDistanciaAlejamiento(distanciaA);
-                    maltratador.setFoto(imagenA); //imagen
-                    
-                //this.maltratadorFacade.create(maltratador);
-                this.protegidoFacade.create(protegido);
-                maltratador.setIdProtegido(protegido);
-                this.maltratadorFacade.create(maltratador);
-                //protegido.addMaltratador(maltratador);
-                //this.protegidoFacade.create(protegido);
-                
-                 
-                /*maltratador.setIdProtegido(protegido);
-                this.maltratadorFacade.create(maltratador);*
-                
-                
-                
-                // Creación de los objetos contactos
-                /*Contacto contacto1 = new Contacto();
-                contacto1.setNombre(nombreC1);
-                contacto1.setTelefonoContacto(movilC1);
-                contacto1.setEmail(emailC1);
 
-                Contacto contacto2 = new Contacto();
-                contacto2.setNombre(nombreC2);
-                contacto2.setTelefonoContacto(movilC2);
-                contacto2.setEmail(emailC2);*/
-                
-                //protegido.setContactoCollection(null);
-                
-                // Guardado de protegido y contactos en la base de datos
-                
-                //this.contactoFacade.create(contacto1);
-                //this.contactoFacade.create(contacto2);
 
-                
-                // Guardado del maltratado (si se ha introducido)
+
+
+
+        /*Maltratador maltratador = new Maltratador();
+        maltratador.setNombre(nombreA);
+        maltratador.setApellidos(apellidosA);
+        maltratador.setDispositivo(dispositivoA);
+        maltratador.setDistanciaAlejamiento(distanciaA);
+        maltratador.setFoto(imagenA); //imagen*/
+
+        //this.maltratadorFacade.create(maltratador);
+        //maltratador.setIdProtegido(protegido);
+        //this.maltratadorFacade.create(maltratador);
+        //protegido.addMaltratador(maltratador);
+        //this.protegidoFacade.create(protegido);
+
+
+        /*maltratador.setIdProtegido(protegido);
+        this.maltratadorFacade.create(maltratador);*
+        
+        
+        
+        // Creación de los objetos contactos
+        /*Contacto contacto1 = new Contacto();
+        contacto1.setNombre(nombreC1);
+        contacto1.setTelefonoContacto(movilC1);
+        contacto1.setEmail(emailC1);
+        
+        Contacto contacto2 = new Contacto();
+        contacto2.setNombre(nombreC2);
+        contacto2.setTelefonoContacto(movilC2);
+        contacto2.setEmail(emailC2);*/
+
+        //protegido.setContactoCollection(null);
+
+        // Guardado de protegido y contactos en la base de datos
+
+        //this.contactoFacade.create(contacto1);
+        //this.contactoFacade.create(contacto2);
+
+
+        // Guardado del maltratado (si se ha introducido)
                 /*if(!nombreA.isEmpty() && !apellidosA.isEmpty() && dispositivoA != null && distanciaA != null){
-                    Maltratador maltratador = new Maltratador();
-                    maltratador.setNombre(nombreA);
-                    maltratador.setApellidos(apellidosA);
-                    maltratador.setDispositivo(dispositivoA);
-                    maltratador.setDistanciaAlejamiento(distanciaA);
-                    maltratador.setFoto(imagenA); //imagen
-                    //maltratador.setIdProtegido(protegido);
-                    
-                    this.maltratadorFacade.create(maltratador);
-                }*/
-                
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/respuestaCreateUser.jsp");
-            dispatcher.forward(request, response);
+        Maltratador maltratador = new Maltratador();
+        maltratador.setNombre(nombreA);
+        maltratador.setApellidos(apellidosA);
+        maltratador.setDispositivo(dispositivoA);
+        maltratador.setDistanciaAlejamiento(distanciaA);
+        maltratador.setFoto(imagenA); //imagen
+        //maltratador.setIdProtegido(protegido);
+        
+        this.maltratadorFacade.create(maltratador);
+        }*/
+
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/respuestaCreateUser.jsp");
+        dispatcher.forward(request, response);
 
     }
 

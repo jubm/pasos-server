@@ -19,12 +19,13 @@ $(document).ready(function(){
     $("#menuCrear").click(function(){
         $("#content").load("http://localhost:8080/PasosServerEnterpriseApplication-war/crearUsuarios.jsp");
     });
-    
+
     $("#menuEstadisticas").click(function(){
-        $("#content").empty().append("<p>Estadisticas</p>"); 
+        $("#content").load("http://localhost:8080/PasosServerEnterpriseApplication-war/estadisticas.jsp");
     });
     
-    //$("#iframe").hide();
+    $("#iframe").hide();
+    //$("#mapa").hide();
     //$("#mapa").hide();
     
     /*
@@ -63,64 +64,88 @@ function buscarUsuario(){
 
 function crearUsuario(){
      
-
-     
+    var opcion = $('#tipouser').val();
+    
+    if(opcion == 1){
+        
+        tipo = 1;
         nombreP = $("#nombreP").val();
         apellidosP = $("#apellidosP").val();
         fechanacP = $("#fechanacP").val();
         telefonoP = $("#telefonoP").val();
-        imagenP = $("#imagenP").val();
+        imeiP = $("#imeiP").val();
         nombreC1 = $("#nombreC1").val();
         movilC1 = $("#movilC1").val();
         emailC1 = $("#emailC1").val();
         nombreC2 = $("#nombreC2").val();
         movilC2 = $("#movilC2").val();
         emailC2 = $("#emailC2").val();
+        url="CreateUserServlet?tipo=1&nombreP="+nombreP+"&apellidosP="+apellidosP+"&fechanacP="+fechanacP+"&telefonoP="+telefonoP+"&imeiP="+imeiP+
+        "&nombreC1="+nombreC1+"&movilC1="+movilC1+"&emailC1="+emailC1+"&nombreC2="+nombreC2+"&movilC2="+movilC2+"&emailC2="+emailC2;
+    }else{
+         
+        tipo=2;
         nombreA = $("#nombreA").val();
         apellidosA = $("#apellidosA").val();
         dispositivoA = $("#dispositivoA").val();
         distanciaA = $("#distanciaA").val();
-        imagenA = $("#imagenA").val();
+        imeiA = $("#imeiA").val();
+        url="CreateUserServlet?tipo=2&&nombreA="+nombreA+"&apellidosA="+apellidosA+"&dispositivoA="+dispositivoA+"&distanciaA="+distanciaA+"&imeiA="+imeiA;
+    }
         
-        url="CreateUserServlet?nombreP="+nombreP+"&apellidosP="+apellidosP+"&fechanacP="+fechanacP+"&telefonoP="+telefonoP+
-            "&imagenP="+imagenP+"&nombreC1="+nombreC1+"&movilC1="+movilC1+"&emailC1="+emailC1+"&nombreC2="+nombreC2+"&movilC2="+movilC2+"&emailC2="+emailC2+
-            "&nombreA="+nombreA+"&apellidosA="+apellidosA+"&dispositivoA="+dispositivoA+"&distanciaA="+distanciaA+"&imagenA="+imagenA;
         
-        $.ajax({
+    /*url="CreateUserServlet?nombreP="+nombreP+"&apellidosP="+apellidosP+"&fechanacP="+fechanacP+"&telefonoP="+telefonoP+
+    "&imagenP="+imagenP+"&nombreC1="+nombreC1+"&movilC1="+movilC1+"&emailC1="+emailC1+"&nombreC2="+nombreC2+"&movilC2="+movilC2+"&emailC2="+emailC2+
+    "&nombreA="+nombreA+"&apellidosA="+apellidosA+"&dispositivoA="+dispositivoA+"&distanciaA="+distanciaA+"&imagenA="+imagenA;
+        */
+    $.ajax({
                     
-            type: 'POST',
-            url: url,
-            beforeSend: function(){
-              alert(url);  
-            },                
-            success: function(respuesta) {
-                $("#content").empty().append(respuesta);
-            },
-            error: function() {
-                alert("Los datos no han podido ser almacenados correctamente");
-            }
-        });      
+        type: 'POST',
+        url: url,
+        beforeSend: function(){
+            alert(url); 
+            $("#content").empty().append("<img src='imagenes/loading.gif'>");
+        },                
+        success: function(respuesta) {
+            $("#content").empty().append(respuesta);
+        },
+        error: function() {
+            alert("Los datos no han podido ser almacenados correctamente");
+        }
+    });      
                     
 }
               
-//Añadido para que no se recargue la página
-function startUpload(){
-    document.getElementById('f1_upload_process').style.visibility = 'visible';
-    return true;
+
+function alarma(){
+    alert("alarmaaaaa");
+    parent.mostrarMarker(LT,LN);  
+}
+function mostrarMarker(LT,LN){
+        
+        myLatlng = new google.maps.LatLng(LT ,LN);
+        marker1 = new google.maps.Marker({
+        position: myLatlng, 
+              map: map
+        });
+        marker = marker1;
+}
+function borradoMarker(){    
+    markersArrayProtegida.setMap(null);         
+    
 }
 
-function stopUpload(success){
-    var result = '';
-    if (success == 1){
-        document.getElementById('result').innerHTML =
-        '<span class="msg">The file was uploaded successfully!<\/span><br/><br/>';
+//Crear mapa
+function initialize() {
+    directionsDisplay = new google.maps.DirectionsRenderer();  
+    var myLatlng1 = new google.maps.LatLng(36.717696,-4.463711);   
+    var myOptions = {
+        zoom: 15,
+        center: myLatlng1,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-    else {
-        document.getElementById('result').innerHTML = 
-        '<span class="emsg">There was an error during file upload!<\/span><br/><br/>';
-    }
-    document.getElementById('f1_upload_process').style.visibility = 'hidden';
-    return true;   
+    map = new google.maps.Map(document.getElementById("mapa"), myOptions);
+    directionsDisplay.setMap(map);
 }
 
 function alarma(){   
