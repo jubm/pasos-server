@@ -22,6 +22,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -81,11 +82,11 @@ public class Protegido implements Serializable {
     @Size(max = 18)
     @Column(name = "IMEI")
     private String imei;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProtegido")
+    @OneToMany(fetch= FetchType.EAGER ,cascade = CascadeType.ALL, mappedBy = "idProtegido")
     private Collection<Maltratador> maltratadorCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProtegido")
     private Collection<Alarma> alarmaCollection;
-    @OneToMany(mappedBy = "idProtegido")
+    @OneToMany(fetch= FetchType.EAGER,mappedBy = "idProtegido")
     private Collection<Contacto> contactoCollection;
 
     public Protegido() {

@@ -293,10 +293,10 @@ public class CometServlet extends HttpServlet {
                     info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p>";
                     info= info + "<p>Protegida: "+maltratador.getIdProtegido().getNombre() + " " +maltratador.getIdProtegido().getApellidos()+"</p>";
                     info= info + "<p>Movil: "+maltratador.getIdProtegido().getTelefonoMovil()+"</p>";
-                    /*Collection<Contacto> contactoCollection = maltratador.getIdProtegido().getContactoCollection();
+                    Collection<Contacto> contactoCollection = maltratador.getIdProtegido().getContactoCollection();
                     for (Contacto c: contactoCollection){
                         info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p>";
-                    }*/
+                    }
                     alarma.setIdMaltratador(maltratador);
                     alarma.setIdProtegido(maltratador.getIdProtegido());
                 }else{
@@ -305,7 +305,7 @@ public class CometServlet extends HttpServlet {
                     info= info + "<p>Protegido: "+protegido.getNombre() + " " +protegido.getApellidos()+"</p>";
                     info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p>";
                     info= info + "<p>Movil: "+protegido.getTelefonoMovil()+"</p>";
-                    /*Collection<Maltratador> maltratadors = protegido.getMaltratadorCollection();
+                    Collection<Maltratador> maltratadors = protegido.getMaltratadorCollection();
                     for (Maltratador m: maltratadors){
                         info= info + "<p>Maltratador: "+m.getNombre()+" "+m.getApellidos()+"</p>";
                     }                
@@ -313,7 +313,7 @@ public class CometServlet extends HttpServlet {
                     Collection<Contacto> contactoCollection = protegido.getContactoCollection();
                     for (Contacto c: contactoCollection){
                         info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p>";
-                    }*/
+                    }
                     
                     protegido = protegidoFacade.findByimei(frame.getRD());
                     alarma.setIdProtegido(protegido);

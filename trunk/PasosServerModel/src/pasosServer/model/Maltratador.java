@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -71,7 +72,7 @@ public class Maltratador implements Serializable {
     @Column(name = "IMEI")
     private String imei;
     @JoinColumn(name = "ID_PROTEGIDO", referencedColumnName = "ID_PROTEGIDO")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch= FetchType.EAGER,cascade = CascadeType.ALL, optional = false)
     private Protegido idProtegido;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMaltratador")
     private Collection<Alarma> alarmaCollection;
