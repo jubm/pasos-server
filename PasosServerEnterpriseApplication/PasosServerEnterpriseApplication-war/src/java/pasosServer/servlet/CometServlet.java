@@ -211,7 +211,9 @@ public class CometServlet extends HttpServlet {
         @Override
         public void onInitialize(CometEvent event) throws IOException {
             printWriter.println("<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">");
-            printWriter.println("<html><head><title>Chat</title><script type='text/javascript' src='js/funciones.js'></script></head><body bgcolor=\"#FFFFFF\"><div id='alarma'></div>");
+            printWriter.println("<html><head><title>Chat</title><script type='text/javascript' src='js/funciones.js'></script>"
+                    +"<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>"+
+                    "</head><body bgcolor=\"#FFFFFF\"><div id='alarma'></div>");
             printWriter.flush();
         }
 
@@ -285,32 +287,32 @@ public class CometServlet extends HttpServlet {
                 Protegido protegido;
                 String info="";
                 if(frame.getType().equals("ZN")){
-                    info= info + "<p>Tipo de alarma: "+frame.getType()+"</p><br/>";
+                    info= info + "<p>Tipo de alarma: "+frame.getType()+"</p>";
                     maltratador = maltratadorFacade.findByimei(frame.getRD());
-                    info= info + "<p>Maltratador: "+maltratador.getNombre() + " " +maltratador.getApellidos()+"</p><br/>";
-                    info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p><br/>";
-                    info= info + "<p>Protegida: "+maltratador.getIdProtegido().getNombre() + " " +maltratador.getIdProtegido().getApellidos()+"</p><br/>";
-                    info= info + "<p>Movil: "+maltratador.getIdProtegido().getTelefonoMovil()+"</p><br/>";
+                    info= info + "<p>Maltratador: "+maltratador.getNombre() + " " +maltratador.getApellidos()+"</p>";
+                    info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p>";
+                    info= info + "<p>Protegida: "+maltratador.getIdProtegido().getNombre() + " " +maltratador.getIdProtegido().getApellidos()+"</p>";
+                    info= info + "<p>Movil: "+maltratador.getIdProtegido().getTelefonoMovil()+"</p>";
                     /*Collection<Contacto> contactoCollection = maltratador.getIdProtegido().getContactoCollection();
                     for (Contacto c: contactoCollection){
-                        info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p><br/>";
+                        info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p>";
                     }*/
                     alarma.setIdMaltratador(maltratador);
                     alarma.setIdProtegido(maltratador.getIdProtegido());
                 }else{
-                    info= info + "<p>Tipo de alarma: "+frame.getType()+"</p><br/>";
+                    info= info + "<p>Tipo de alarma: "+frame.getType()+"</p>";
                     protegido = protegidoFacade.findByimei(frame.getRD());
-                    info= info + "<p>Protegido: "+protegido.getNombre() + " " +protegido.getApellidos()+"</p><br/>";
-                    info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p><br/>";
-                    info= info + "<p>Movil: "+protegido.getTelefonoMovil()+"</p><br/>";
+                    info= info + "<p>Protegido: "+protegido.getNombre() + " " +protegido.getApellidos()+"</p>";
+                    info= info + "<p>Posicion: "+"LN: "+frame.getLN()+" LT: "+frame.getLT()+"</p>";
+                    info= info + "<p>Movil: "+protegido.getTelefonoMovil()+"</p>";
                     /*Collection<Maltratador> maltratadors = protegido.getMaltratadorCollection();
                     for (Maltratador m: maltratadors){
-                        info= info + "<p>Maltratador: "+m.getNombre()+" "+m.getApellidos()+"</p><br/>";
+                        info= info + "<p>Maltratador: "+m.getNombre()+" "+m.getApellidos()+"</p>";
                     }                
                    
                     Collection<Contacto> contactoCollection = protegido.getContactoCollection();
                     for (Contacto c: contactoCollection){
-                        info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p><br/>";
+                        info= info + "<p>Contactos: "+c.getNombre()+" "+c.getTelefonoContacto()+"</p>";
                     }*/
                     
                     protegido = protegidoFacade.findByimei(frame.getRD());

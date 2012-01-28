@@ -24,7 +24,7 @@ $(document).ready(function(){
         $("#content").empty().append("<p>Estadisticas</p>"); 
     });
     
-    $("#iframe").hide();
+    //$("#iframe").hide();
     //$("#mapa").hide();
     
     /*
@@ -126,7 +126,7 @@ function stopUpload(success){
 function alarma(){   
     alert("alarmaaaaa");
     //$("#iframe").show();
-    //$("#iframe").empty().append(info);
+    $("#alarma").empty().append(info);
     parent.mostrarMarker(LT,LN);  
 }
 function mostrarMarker(LT,LN){
