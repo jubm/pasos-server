@@ -34,12 +34,14 @@ public class ProtegidoFacade extends AbstractFacade<Protegido> implements Proteg
         return (Protegido) em.createQuery("select p from Protegido p where p.nombre=:nombre and p.apellidos=:apellidos")
                 .setParameter("nombre", nombre)
                 .setParameter("apellidos", apellidos)
+                .setMaxResults(1)
                 .getSingleResult();
     }
     @Override
     public Protegido findByimei(String imei){
         return (Protegido) em.createQuery("SELECT p FROM Protegido p WHERE p.imei=:imei")
                 .setParameter("imei", imei)
+                .setMaxResults(1)
                 .getSingleResult();
     }
     @Override
