@@ -63,7 +63,7 @@ public class FrameHandlerServlet extends HttpServlet {
             if (typeFrame.equals("ZN") || typeFrame.equals("TE")){
                 frame.setType(typeFrame);
                 trama = trama.substring(4);
-            } else if (typeFrame.equals("AU")){
+            } else if (typeFrame.startsWith("AU")){
                 frame.setType(trama.substring(2,6));
                 trama = trama.substring(6);
             }            
@@ -78,10 +78,10 @@ public class FrameHandlerServlet extends HttpServlet {
                        frame.setLH(trozo.substring(2));
                    }
                    else if (trozo.substring(0, 2).equals("LN")){
-                       frame.setLN(trozo.substring(2));
+                       frame.setLN(converter(trozo.substring(2)));                       
                    }
                    else if (trozo.substring(0, 2).equals("LT")){
-                       frame.setLT(trozo.substring(2));
+                       frame.setLT(converter(trozo.substring(2)));
                    }
                    else if (trozo.substring(0, 2).equals("RD")){
                        frame.setRD(trozo.substring(2));
@@ -96,24 +96,8 @@ public class FrameHandlerServlet extends HttpServlet {
                 protegido.setLongitud(new BigInteger(frame.getLN()));
                 protegidoFacade.updateProtegido(protegido);
             }
-            if (frame.getType().equals("ZN") || frame.getType().startsWith("AU")){
-                System.out.println("ENTRAAAA!");
-                /*Maltratador maltratador = maltratadorFacade.findByimei(frame.getRD());
-                Calendar calendar = Calendar.getInstance();                
-                calendar.setTime(new Date());
-                Date date = calendar.getTime();
-                Alarma alarma = new Alarma();
-                alarma.setFechaHora(date);
-                alarma.setIdMaltratador(maltratador);
-                alarma.setIdProtegido(maltratador.getIdProtegido());
-                if (frame.getType().equals("ZN")){
-                    alarma.setTipo(BigInteger.ZERO);
-                }else{
-                    alarma.setTipo(BigInteger.ONE);
-                }
-                //alarmaFacade.create(alarma);
-                BigDecimal idAlarma = alarma.getIdAlarma();
-                frame.setID(idAlarma);*/
+            if (frame.getType().equals("ZN") || frame.getType().startsWith("AU")){               
+                
                 request.setAttribute("trama",frame);
                 System.out.println("Se va a enviar trama: "+frame);
                 requestDispatcher = getServletContext().getRequestDispatcher("/comet");
@@ -122,7 +106,19 @@ public class FrameHandlerServlet extends HttpServlet {
         }      
         
     }
-
+    public String converter(String coordenada){
+        System.out.println("coordenda: " + coordenada);
+        int signo = Integer.parseInt(coordenada.substring(0,1));
+        float hh = Integer.parseInt(coordenada.substring(1,3));
+        float dd = Integer.parseInt(coordenada.substring(3,5));
+        float nnnn = Integer.parseInt(coordenada.substring(5));
+        float x = hh + dd/60 + nnnn/60000;        
+        if (signo ==2){
+            x= -x;
+        }
+        System.out.println(Float.toString(x));
+        return Float.toString(x);
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.

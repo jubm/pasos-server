@@ -45,9 +45,9 @@ public class LoginServlet extends HttpServlet {
         
         try{
             //hacer comprobación en la base de datos
-            /*Operador operador = this.operadorFacade.findByLoginAndPassword(user,password);
+            Operador operador = this.operadorFacade.findByLoginAndPassword(user,password);
             BigDecimal idOperador = operador.getIdOperador();
-            request.setAttribute("id", idOperador);*/
+            request.getSession(true).setAttribute("id", idOperador);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/comet");
             dispatcher.forward(request,response);
         }catch(javax.ejb.EJBException e){
