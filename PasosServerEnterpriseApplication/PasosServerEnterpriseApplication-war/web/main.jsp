@@ -27,6 +27,7 @@
     <div id="user">
         Operador/a: <b>${username}</b>
         <span id="logout"><b><a href="#" id="desconectar">descontectar</a></b></span>
+        <input id="atendida" type="button" value="atendida"></input>
     </div>
     <ul id="menu">
         <li><a href="#" id="menuBuscar">BUSCAR USUARIO</a></li>
@@ -42,9 +43,10 @@
         </iframe> 
 
     </frameset>
-    <div id="mapa" style="position: absolute; left: 21%; right: 26%; top: 25%;bottom: 11%; overflow: hidden; z-index: 0;">                   
+    
+    <div id="mapa" style="position: absolute; left:45%; right: 2%; top:45%;bottom: 5%; overflow: hidden; z-index: 0;">                   
     </div> 
-
+    
 
 </body>
 </html>

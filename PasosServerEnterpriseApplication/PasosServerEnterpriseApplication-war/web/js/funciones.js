@@ -12,7 +12,11 @@ $(document).ready(function(){
     * EVENTOS MENU
     */
 
-    $("#iframe").hide();
+    //$("#iframe").hide();
+    $("#atendida").click(function(){
+        $.post("comet?action=atendido");
+        $("#mapa").hide();
+    });
     
     $("#menuBuscar").click(function(){
         $("#content").load("http://localhost:8080/PasosServerEnterpriseApplication-war/buscarProtegido.jsp");
@@ -36,7 +40,7 @@ $(document).ready(function(){
      */
     $("#atendido").click(function(){            
         $.post('comet?action=atendido',function(data){});
-        $("#alarma").hide();
+        //$("#alarma").hide();
     });
     //Load map
     initialize(); 
@@ -122,9 +126,13 @@ function crearUsuario(){
               
 
 function alarma(){
-    alert("alarmaaaaa");
+    alert("alarmaaaaa");  
+    $("#alarma").empty().append(info);
+    parent.$("#mapa").show();
+    parent.initialize();
     parent.mostrarMarker(LT,LN);  
 }
+
 function mostrarMarker(LT,LN){
         
         myLatlng = new google.maps.LatLng(LT ,LN);
