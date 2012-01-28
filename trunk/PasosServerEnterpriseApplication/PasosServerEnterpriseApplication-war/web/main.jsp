@@ -38,6 +38,7 @@
     </frameset>
     <div id="mapa" style="position: absolute; left: 21%; right: 26%; top: 25%;bottom: 11%; overflow: hidden; z-index: 0;">                   
      </div> 
+    <div id ="prueba"></div>
     
 
 </body>
