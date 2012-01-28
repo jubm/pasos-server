@@ -20,8 +20,11 @@
 </script>
 
 
-<form name="alta" enctype="multipart/form-data" target="upload_target" onsubmit="startUpload();">
+    <select name="tipouser" id="tipouser">
+        <option value="1">Protegida</option>
+        <option value="2">Agresor/Sospechoso</option>
 
+    </select>
 
     <div id="protegida">
         <fieldset>
@@ -39,12 +42,10 @@
             Numero de telefono <br />
             <input id="telefonoP" type="text" name="telefonoP"  value="" />
             <br />
+            IMEI <br />
+            <input id="imeiP" type="text" name="imeiP"  value="" />
+            <br />
 
-        </fieldset>
-        <fieldset>
-            <legend align="right">Fotografía de la víctima</legend>
-            Enlace imagen <br />
-            <input type="file" name="file" id="imagenP">
         </fieldset>
 
         <fieldset>
@@ -90,19 +91,13 @@
             Distancia alejamiento víctima <br />
             <input id="distanciaA" type="text" name="distancia"  value="" />
             <br />
-
-        </fieldset>
-
-        <fieldset>
-            <legend align="right">Fotografía del agresor</legend>
-            Enlace imagen <br />
-            <input type="file" name="file2" id="imagenA">
+            IMEI <br />
+            <input id="imeiA" type="text" name="imeiA"  value="" />
+            <br />
         </fieldset>
 
 
     </div>
     <input type="submit" name="enviar" id="enviar" value="Enviar"/>
-</form>
 
 </div>
-<iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
