@@ -4,6 +4,7 @@
  */
 package pasosServer.ejb;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Remote;
 import pasosServer.model.Maltratador;
@@ -31,4 +32,5 @@ public interface MaltratadorFacadeRemote {
 
     public pasosServer.model.Maltratador findByimei(java.lang.String imei);   
     
+    public void createMaltratador(Maltratador maltratador, BigDecimal idProtegido);
 }
