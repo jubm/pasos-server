@@ -18,7 +18,18 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +51,10 @@ import pasosServer.model.Protegido;
  * @author Jesus Ruiz Oliva
  */
 public class CometServlet extends HttpServlet {
+    @Resource(mappedName = "jms/queue")
+    private Queue queue;
+    @Resource(mappedName = "jms/queueFactory")
+    private ConnectionFactory queueFactory;
     @EJB
     private ProtegidoFacadeRemote protegidoFacade;
     @EJB
@@ -108,7 +123,7 @@ public class CometServlet extends HttpServlet {
                 handler.clientIP = request.getRemoteAddr();
                 handler.attach(response.getWriter());
                 //Guardamos el manejador
-                ClientInfo clientInfo= new ClientInfo(Boolean.FALSE,id, username,(CometHandler) handler);
+                ClientInfo clientInfo= new ClientInfo(Boolean.FALSE,id, username,(CometHandler) handler);                
                 clientInfos.add(clientInfo);             
                 cometContext.addCometHandler(handler);
                 System.out.println(isPendingMessage);
@@ -130,12 +145,14 @@ public class CometServlet extends HttpServlet {
                 
                 for (ClientInfo clientInfo : clientInfos){
                     if (clientInfo.getUsuario().equals(username)){
+                        String codigo = "<script languaje='Javascript'>parent.$('#iframe').hide();$('#alarma').empty();</script>";    
+                        cometContext.notify(codigo,CometEvent.NOTIFY,clientInfo.getCometHandler());
                         if(isPendingMessage){
                             Operador operador = operadorFacade.find(clientInfo.getId());
                             String info = saveAlarm(listAlarmFrame.get(0), operador);
                             String LT = "LT="+listAlarmFrame.get(0).getLT()+";";
                             String LN = "LN="+listAlarmFrame.get(0).getLN()+";";                
-                            String codigo = "<script languaje='Javascript'>"+info+LT+LN+"alarma();</script>";
+                            codigo = "<script languaje='Javascript'>"+info+LT+LN+"alarma();</script>";
                             clientInfo.setHandlerState(Boolean.TRUE);
                             cometContext.notify(codigo,CometEvent.NOTIFY,clientInfo.getCometHandler());
                             listAlarmFrame.remove(0);
@@ -161,7 +178,13 @@ public class CometServlet extends HttpServlet {
                 String LT = "LT="+trama.getLT()+";";
                 String LN = "LN="+trama.getLN()+";";
                 
-                
+                if(trama.getType().equals("ZN")){
+                try {
+                    sendJMSMessageToQueue(trama);
+                } catch (JMSException ex) {
+                    Logger.getLogger(CometServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }
                 ClientInfo firstClientNotBusy = null;
                 for(ClientInfo clientInfo : clientInfos){
                     if (firstClientNotBusy==null && clientInfo.getHandlerState().equals(false)){
@@ -212,7 +235,8 @@ public class CometServlet extends HttpServlet {
         public void onInitialize(CometEvent event) throws IOException {
             printWriter.println("<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">");
             printWriter.println("<html><head><title>Chat</title><script type='text/javascript' src='js/funciones.js'></script>"
-                    +"<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>"+
+                    +"<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>"
+                    + 
                     "</head><body bgcolor=\"#FFFFFF\"><div id='alarma'></div>");
             printWriter.flush();
         }
@@ -337,5 +361,34 @@ public class CometServlet extends HttpServlet {
                 info = "info= '"+info+"';";                
                 return info;
         }
+
+    private Message createJMSMessageForjmsQueue(Session session, Object messageData) throws JMSException {
+        // TODO create and populate message to send
+        TextMessage tm = session.createTextMessage();
+        tm.setText(messageData.toString());
+        return tm;
+    }
+
+    private void sendJMSMessageToQueue(Object messageData) throws JMSException {
+        Connection connection = null;
+        Session session = null;
+        try {
+            connection = queueFactory.createConnection();
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            MessageProducer messageProducer = session.createProducer(queue);
+            messageProducer.send(createJMSMessageForjmsQueue(session, messageData));
+        } finally {
+            if (session != null) {
+                try {
+                    session.close();
+                } catch (JMSException e) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Cannot close session", e);
+                }
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
         
 }

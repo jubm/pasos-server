@@ -36,7 +36,7 @@
     </ul>
 
     <div id="content"></div>
-    <frameset>
+    <frameset id="frameset">
 
         <iframe src ="comet?action=suscribe" id="iframe" name="iframeChat" width="100%" scrolling="auto">
 
