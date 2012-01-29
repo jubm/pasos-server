@@ -12,10 +12,11 @@ $(document).ready(function(){
     * EVENTOS MENU
     */
 
-    //$("#iframe").hide();
+    $("#iframe").hide();
     $("#atendida").click(function(){
         $.post("comet?action=atendido");
         $("#mapa").hide();
+        //atendida();
     });
     
     $("#menuBuscar").click(function(){
@@ -39,10 +40,7 @@ $(document).ready(function(){
     /*
      * EVENTO BOTÓN FINALIZACIÓN ATENCIÓN ALARMA
      */
-    $("#atendido").click(function(){            
-        $.post('comet?action=atendido',function(data){});
-        //$("#alarma").hide();
-    });
+   
     //Load map
     initialize(); 
     $("#mapa").hide();
@@ -127,8 +125,9 @@ function crearUsuario(){
               
 
 function alarma(){
-    alert("alarmaaaaa");  
+    alert("alarmaaaaa");    
     $("#alarma").empty().append(info);
+    parent.$("#iframe").show();
     parent.$("#mapa").show();
     parent.initialize();
     parent.mostrarMarker(LT,LN);  
