@@ -27,7 +27,7 @@ public class Connection {
             httppost.setEntity(sendentity);
 
             // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
+            httpclient.execute(httppost);
             
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
