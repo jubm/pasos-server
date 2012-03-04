@@ -1,18 +1,25 @@
 package org.inftel.pasos.activities;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import org.inftel.pasos.R;
 import org.inftel.pasos.controlador.Controlador;
 import org.inftel.pasos.modelo.Modelo;
-import org.inftel.pasos.modelo.Modelo.Listener;
+import org.inftel.pasos.vos.Preferencias;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class PreferenciasActivity extends Activity implements Listener{
+public class PreferenciasActivity extends Activity implements Observer{
 	
 	
-    private static final String TAG = AlarmaActivity.class.getSimpleName();
+    private static final String TAG = PreferenciasActivity.class.getSimpleName();
     private Modelo modelo;
     private Controlador controlador;
 	
@@ -21,36 +28,21 @@ public class PreferenciasActivity extends Activity implements Listener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.preferencias);
         
         // Se obtienen el modelo a partir del Intent
         modelo = (Modelo) getIntent().getExtras().getSerializable("modelo");
-
-        // Se establece el modelo
-        Log.d(TAG,"Se va a establecer el modelo");
-        setModelo(modelo);
-    }
-
-    
-    public void setModelo(Modelo modelo) {
-
-        if (modelo == null) {
-            throw new NullPointerException("Modelo");
-        }
-
-        Modelo oldModel = this.modelo;
-        if (oldModel != null) {
-            oldModel.removeListener(this);
-        }
-        this.modelo = modelo;
-        this.modelo.addListener(this);
-        this.controlador = new Controlador(this.modelo);
+        modelo.addObserver(this);
+        this.controlador = new Controlador(modelo);
+        Log.d(TAG,"Modelo y controlador establecidos");
+               
 
     }
+
     
-    
-	public void onModelStateUpdated(Modelo modelo) {
-		// TODO Auto-generated method stub
+ 	public void update(Observable observable, Object data) {
 		
+ 		Log.d(TAG,"Update");
+ 		
 	}
 }
