@@ -33,6 +33,7 @@ public class PasosActivity extends Activity{
         i.putExtras(bundle);
         startActivity(i);
         
+        
         Log.d(TAG,"Hola");
     }
 }

@@ -3,7 +3,7 @@ package org.inftel.pasos.controlador;
 import org.inftel.pasos.modelo.Modelo;
 import org.inftel.pasos.vos.Preferencias;
 
-public class Controlador {
+public class Controlador implements IControlador{
 
 	private Modelo modelo;
 	
@@ -11,8 +11,8 @@ public class Controlador {
 		this.modelo = modelo;
 	}
 	
-	public Preferencias getPreferencias(){
-		return this.modelo.getPreferencias();
+	public void setPreferencias(Preferencias preferencias) {
+		modelo.setPreferencias(preferencias);
 	}
-	
+
 }
