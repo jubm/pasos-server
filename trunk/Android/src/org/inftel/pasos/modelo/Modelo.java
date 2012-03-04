@@ -1,29 +1,101 @@
 package org.inftel.pasos.modelo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 
-import org.inftel.pasos.vos.Preferencias;
+import org.inftel.pasos.R;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class Modelo extends Observable implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private Preferencias preferencias;
-
-	public Modelo() {
-	}
-
-	public Preferencias getPreferencias() {
-		return preferencias;
-	}
+	private Boolean notifVibracion;
+	private Boolean notifVoz;
+	private String tema;
+	private int tamTexto;
+	private SharedPreferences prefs;
+	private SharedPreferences.Editor editor;
 	
-	public void setPreferencias(Preferencias preferencias){
-		this.preferencias = preferencias;
+	public Modelo(Context ctx) {
+		prefs = ctx.getSharedPreferences("prefs",
+				Activity.MODE_PRIVATE);
+		editor = prefs.edit();
+
+		notifVibracion = prefs.getBoolean("vib", true);
+		notifVoz = prefs.getBoolean("voz", true);
+		tema = prefs.getString("tema", ctx.getString(R.string.tema1));
+		tamTexto = prefs.getInt("tam", 10);
+
+	}
+
+	
+	
+	public Boolean getNotifVibracion() {
+		return notifVibracion;
+	}
+
+
+
+	public int getTamTexto() {
+		return tamTexto;
+	}
+
+
+
+	public void setTamTexto(int tamTexto) {
+		this.tamTexto = tamTexto;
 		setChanged();
-		notifyObservers(preferencias);		
+		notifyObservers(this);	
+	}
+
+
+
+	public void setNotifVibracion(Boolean notifVibracion) {
+		this.notifVibracion = notifVibracion;
+		editor.putBoolean("vib", notifVibracion);
+		editor.commit();
+		setChanged();
+		notifyObservers(this);	
+	}
+
+
+
+	public Boolean getNotifVoz() {
+		return notifVoz;
+	}
+
+
+
+	public void setNotifVoz(Boolean notifVoz) {
+		this.notifVoz = notifVoz;
+		editor.putBoolean("voz", notifVoz);
+		editor.commit();
+		setChanged();
+		notifyObservers(this);	
+	}
+
+
+
+	public String getTema() {
+		return tema;
+	}
+
+
+
+	public void setTema(String tema) {
+		this.tema = tema;
+		setChanged();
+		notifyObservers(this);	
+	}
+
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }
