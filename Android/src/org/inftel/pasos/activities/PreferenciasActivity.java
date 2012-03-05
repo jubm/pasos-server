@@ -13,9 +13,12 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.ZoomControls;
@@ -30,13 +33,10 @@ public class PreferenciasActivity extends Activity implements Observer {
 	// Elementos UI
 	private TextView notif_titulo;
 	private TextView vib_titulo;
-	private TextView vib_desc;
 	private CheckBox vib_check;
 	private TextView voz_titulo;
-	private TextView voz_desc;
 	private CheckBox voz_check;
 	private TextView tema_titulo;
-	private TextView tema_desc;
 	private RadioButton tema1;
 	private RadioButton tema2;
 	private RadioButton tema3;
@@ -47,36 +47,42 @@ public class PreferenciasActivity extends Activity implements Observer {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.preferencias);
+		
 
 		Log.d(TAG, "ON START!");
 
 		initModeloControlador();
+		initLayout();
 		initViews();
 
 		actualizarOpciones();
 		actualizarTamTextos();
 	}
 
+	private void initLayout() {
+		setTheme(controlador.getTema());
+		setContentView(R.layout.preferencias);		
+	}
+
 	/**
 	 * Actualiza el tama–o de los textos
 	 */
-	private void actualizarTamTextos(){
+	private void actualizarTamTextos() {
 		float tam = controlador.getTamTexto();
 		notif_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
 		vib_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
 		voz_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
 		tema_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
-		tema1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam-5);
-		tema2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam-5);
-		tema3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam-5);
+		tema1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam - 5);
+		tema2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam - 5);
+		tema3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam - 5);
 	}
-	
+
 	/**
 	 * Inicializa las variables que representan a los elementos de la UI
 	 */
 	private void initViews() {
-		
+
 		notif_titulo = (TextView) findViewById(R.id.pref_not_titulo);
 		vib_titulo = (TextView) findViewById(R.id.pref_not_vib_titulo);
 		vib_check = (CheckBox) findViewById(R.id.pref_not_vib_checkbox);
@@ -103,13 +109,25 @@ public class PreferenciasActivity extends Activity implements Observer {
 			}
 		});
 
-		
 		// EVENTO GROUP
 		temaGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-				Log.d(TAG, "SELECCIONADO -> " + checkedId);
+				switch (checkedId) {
+				case R.id.pref_tema_1:
+					Log.d(TAG, "SELECCIONADO -> Tema 1");
+					controlador.setTema(R.style.tema1);
+					break;
+				case R.id.pref_tema_2:
+					Log.d(TAG, "SELECCIONADO -> Tema 2");
+					controlador.setTema(R.style.tema2);
+					break;
+				case R.id.pref_tema_3:
+					Log.d(TAG, "SELECCIONADO -> Tema 3");
+					controlador.setTema(R.style.tema3);
+					break;
+				}
 			}
 		});
 
@@ -134,16 +152,16 @@ public class PreferenciasActivity extends Activity implements Observer {
 		vib_check.setChecked(controlador.getNotifVibracion());
 		voz_check.setChecked(controlador.getNotifVoz());
 
-		String t = controlador.getTema();
-		if (t.equals(getString(R.id.pref_tema_1))) {
+		int t = controlador.getTema();
+		if (t == R.style.tema1) {
 			tema1.setChecked(true);
 			tema2.setChecked(false);
 			tema3.setChecked(false);
-		} else if (t.equals(getString(R.id.pref_tema_2))) {
+		} else if (t == R.style.tema2) {
 			tema1.setChecked(false);
 			tema2.setChecked(true);
 			tema3.setChecked(false);
-		} else if (t.equals(getString(R.id.pref_tema_3))) {
+		} else if (t == R.style.tema3) {
 			tema1.setChecked(false);
 			tema2.setChecked(false);
 			tema3.setChecked(true);
@@ -166,6 +184,7 @@ public class PreferenciasActivity extends Activity implements Observer {
 	public void update(Observable observable, Object data) {
 
 		Log.d(TAG, "Update");
+		actualizarOpciones();
 		actualizarTamTextos();
 	}
 

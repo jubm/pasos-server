@@ -18,7 +18,7 @@ public class Controlador implements IControlador{
 		this.modelo.setNotifVoz(b);
 	}
 
-	public void setTema(String t) {
+	public void setTema(int t) {
 		this.modelo.setTema(t);
 	}
 
@@ -44,7 +44,7 @@ public class Controlador implements IControlador{
 		return this.modelo.getNotifVoz();
 	}
 
-	public String getTema() {
+	public int getTema() {
 		return this.modelo.getTema();
 	}
 

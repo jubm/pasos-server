@@ -42,8 +42,6 @@ public class PasosActivity extends Activity{
 			startActivity(intent);
 			
 			return true;
-		case R.id.menu_tema:
-			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

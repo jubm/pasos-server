@@ -5,12 +5,12 @@ public interface IControlador {
 	
 	void setNotifVibrador(Boolean b);
 	void setNotifVoz(Boolean b);
-	void setTema(String t);
+	void setTema(int t);
 	void setTamTexto(float t);
 	void aumentarTexto();
 	void disminuirTexto();
 	Boolean getNotifVibracion();
 	Boolean getNotifVoz();
-	String getTema();
+	int getTema();
 	float getTamTexto();
 }
