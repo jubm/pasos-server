@@ -19,5 +19,6 @@
     <string name="tema2_desc">Escoge el tema 2</string>
     <string name="tema3">Tema 3</string>
     <string name="tema3_desc">Escoge el tema 3</string>
+    <string name="preferencias">Preferencias</string>
 
 </resources>
