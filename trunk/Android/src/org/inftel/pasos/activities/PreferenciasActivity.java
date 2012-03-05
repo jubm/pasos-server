@@ -79,26 +79,23 @@ public class PreferenciasActivity extends Activity implements Observer {
 		
 		notif_titulo = (TextView) findViewById(R.id.pref_not_titulo);
 		vib_titulo = (TextView) findViewById(R.id.pref_not_vib_titulo);
-		//vib_desc = (TextView) findViewById(R.id.pref_not_vib_desc);
 		vib_check = (CheckBox) findViewById(R.id.pref_not_vib_checkbox);
 		voz_titulo = (TextView) findViewById(R.id.pref_not_voz_titulo);
-		//voz_desc = (TextView) findViewById(R.id.pref_not_voz_desc);
 		voz_check = (CheckBox) findViewById(R.id.pref_not_voz_checkbox);
 		tema_titulo = (TextView) findViewById(R.id.pref_tema_titulo);
-		//tema_desc = (TextView) findViewById(R.id.pref_tema_desc);
 		tema1 = (RadioButton) findViewById(R.id.pref_tema_1);
 		tema2 = (RadioButton) findViewById(R.id.pref_tema_2);
 		tema3 = (RadioButton) findViewById(R.id.pref_tema_3);
 		temaGroup = (RadioGroup) findViewById(R.id.pref_tema_radiogroup);
 		zoom = (ZoomControls) findViewById(R.id.pref_zoom);
 
+		// EVENTOS ZOOM
 		zoom.setOnZoomInClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				controlador.aumentarTexto();
 			}
 		});
-
 		zoom.setOnZoomOutClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -106,6 +103,8 @@ public class PreferenciasActivity extends Activity implements Observer {
 			}
 		});
 
+		
+		// EVENTO GROUP
 		temaGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -134,8 +133,6 @@ public class PreferenciasActivity extends Activity implements Observer {
 
 		vib_check.setChecked(controlador.getNotifVibracion());
 		voz_check.setChecked(controlador.getNotifVoz());
-		Log.d(TAG, "VIBRA ->" + controlador.getNotifVibracion());
-		Log.d(TAG, "VOZ -> " + controlador.getNotifVoz());
 
 		String t = controlador.getTema();
 		if (t.equals(getString(R.id.pref_tema_1))) {
