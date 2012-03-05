@@ -16,7 +16,7 @@ public class Modelo extends Observable implements Serializable{
 	private Boolean notifVibracion;
 	private Boolean notifVoz;
 	private String tema;
-	private int tamTexto;
+	private float tamTexto;
 	private SharedPreferences prefs;
 	private SharedPreferences.Editor editor;
 	
@@ -28,8 +28,7 @@ public class Modelo extends Observable implements Serializable{
 		notifVibracion = prefs.getBoolean("vib", true);
 		notifVoz = prefs.getBoolean("voz", true);
 		tema = prefs.getString("tema", ctx.getString(R.string.tema1));
-		tamTexto = prefs.getInt("tam", 10);
-
+		tamTexto = prefs.getFloat("tam", 20);
 	}
 
 	
@@ -40,13 +39,13 @@ public class Modelo extends Observable implements Serializable{
 
 
 
-	public int getTamTexto() {
+	public float getTamTexto() {
 		return tamTexto;
 	}
 
 
 
-	public void setTamTexto(int tamTexto) {
+	public void setTamTexto(float tamTexto) {
 		this.tamTexto = tamTexto;
 		setChanged();
 		notifyObservers(this);	
