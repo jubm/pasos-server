@@ -22,19 +22,18 @@ public class Controlador implements IControlador{
 		this.modelo.setTema(t);
 	}
 
-	public void setTamTexto(int t) {
-		// TODO Auto-generated method stub
-		
+	public void setTamTexto(float t) {
+		modelo.setTamTexto(t);
 	}
 
 	public void aumentarTexto() {
-		// TODO Auto-generated method stub
-		
+		float t = modelo.getTamTexto();
+		modelo.setTamTexto(t+2);
 	}
 
 	public void disminuirTexto() {
-		// TODO Auto-generated method stub
-		
+		float t = modelo.getTamTexto();
+		modelo.setTamTexto(t-2);		
 	}
 
 	public Boolean getNotifVibracion() {
@@ -49,9 +48,8 @@ public class Controlador implements IControlador{
 		return this.modelo.getTema();
 	}
 
-	public int getTamTexto() {
-		// TODO Auto-generated method stub
-		return 0;
+	public float getTamTexto() {
+		return this.modelo.getTamTexto();
 	}
 	
 

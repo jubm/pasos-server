@@ -1,112 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pref_layout_principal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:focusable="true"
+    android:orientation="vertical"
+    android:soundEffectsEnabled="true" >
 
     <ZoomControls
         android:id="@+id/pref_zoom"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
+        android:layout_gravity="top" />
 
     <TextView
-        android:id="@+id/pref_not_vib_titulo"
+        android:id="@+id/pref_not_titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pref_zoom"
-        android:paddingLeft="5dip"
-        android:text="@string/notif_vibrador"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="@string/notificaciones"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:id="@+id/layoutVibracion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/pref_not_vib_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="onClickVibracion" />
+
+        <TextView
+            android:id="@+id/pref_not_vib_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left|center_vertical|fill_vertical"
+            android:text="@string/notif_vibrador"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutVoz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/pref_not_voz_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="onClickVoz" />
+
+        <TextView
+            android:id="@+id/pref_not_voz_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/notif_voz"
+            android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="left|center_vertical|fill_vertical"/>
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/pref_not_vib_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pref_not_vib_titulo"
-        android:paddingLeft="7dip"
-        android:text="@string/notif_vibrador_desc" />
-
-    <CheckBox
-        android:id="@+id/pref_not_vib_checkbox"
-        android:onClick="onClickVibracion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/pref_zoom" />
-
-    <TextView
-        android:id="@+id/barra1"
+        android:id="@+id/barra"
         android:layout_width="fill_parent"
         android:layout_height="2dip"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pref_not_vib_checkbox"
-        android:background="#FF00FF00" />
-
-    <TextView
-        android:id="@+id/pref_not_voz_titulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/barra1"
-        android:paddingLeft="5dip"
-        android:text="@string/notif_voz"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/pref_not_voz_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pref_not_voz_titulo"
-        android:paddingLeft="7dip"
-        android:text="@string/notif_voz_desc" />
-
-    <CheckBox
-        android:id="@+id/pref_not_voz_checkbox"
-        android:onClick="onClickVoz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/barra1" />
-
-    <TextView
-        android:id="@+id/barra2"
-        android:layout_width="fill_parent"
-        android:layout_height="2dip"
-        android:layout_alignBottom="@+id/pref_not_voz_checkbox"
-        android:layout_alignParentLeft="true"
         android:background="#FF00FF00" />
 
     <TextView
         android:id="@+id/pref_tema_titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/barra2"
         android:paddingLeft="5dip"
         android:text="@string/tema"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/pref_tema_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pref_tema_titulo"
-        android:paddingLeft="7dip"
-        android:text="@string/tema_desc" />
 
     <RadioGroup
         android:id="@+id/pref_tema_radiogroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pref_tema_desc"
         android:paddingLeft="7dip" >
 
         <RadioButton
@@ -129,4 +101,4 @@
             android:text="@string/tema3" />
     </RadioGroup>
 
-</RelativeLayout>
+</LinearLayout>

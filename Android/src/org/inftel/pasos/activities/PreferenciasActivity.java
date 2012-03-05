@@ -8,15 +8,17 @@ import org.inftel.pasos.controlador.Controlador;
 import org.inftel.pasos.modelo.Modelo;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.ZoomControls;
 
 public class PreferenciasActivity extends Activity implements Observer {
 
@@ -26,6 +28,7 @@ public class PreferenciasActivity extends Activity implements Observer {
 	private Controlador controlador;
 
 	// Elementos UI
+	private TextView notif_titulo;
 	private TextView vib_titulo;
 	private TextView vib_desc;
 	private CheckBox vib_check;
@@ -38,6 +41,7 @@ public class PreferenciasActivity extends Activity implements Observer {
 	private RadioButton tema2;
 	private RadioButton tema3;
 	private RadioGroup temaGroup;
+	private ZoomControls zoom;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -51,33 +55,65 @@ public class PreferenciasActivity extends Activity implements Observer {
 		initViews();
 
 		actualizarOpciones();
+		actualizarTamTextos();
 	}
 
+	/**
+	 * Actualiza el tama–o de los textos
+	 */
+	private void actualizarTamTextos(){
+		float tam = controlador.getTamTexto();
+		notif_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
+		vib_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
+		voz_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
+		tema_titulo.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam);
+		tema1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam-5);
+		tema2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam-5);
+		tema3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, tam-5);
+	}
+	
 	/**
 	 * Inicializa las variables que representan a los elementos de la UI
 	 */
 	private void initViews() {
+		
+		notif_titulo = (TextView) findViewById(R.id.pref_not_titulo);
 		vib_titulo = (TextView) findViewById(R.id.pref_not_vib_titulo);
-		vib_desc = (TextView) findViewById(R.id.pref_not_vib_desc);
+		//vib_desc = (TextView) findViewById(R.id.pref_not_vib_desc);
 		vib_check = (CheckBox) findViewById(R.id.pref_not_vib_checkbox);
 		voz_titulo = (TextView) findViewById(R.id.pref_not_voz_titulo);
-		voz_desc = (TextView) findViewById(R.id.pref_not_voz_desc);
+		//voz_desc = (TextView) findViewById(R.id.pref_not_voz_desc);
 		voz_check = (CheckBox) findViewById(R.id.pref_not_voz_checkbox);
 		tema_titulo = (TextView) findViewById(R.id.pref_tema_titulo);
-		tema_desc = (TextView) findViewById(R.id.pref_tema_desc);
+		//tema_desc = (TextView) findViewById(R.id.pref_tema_desc);
 		tema1 = (RadioButton) findViewById(R.id.pref_tema_1);
 		tema2 = (RadioButton) findViewById(R.id.pref_tema_2);
 		tema3 = (RadioButton) findViewById(R.id.pref_tema_3);
 		temaGroup = (RadioGroup) findViewById(R.id.pref_tema_radiogroup);
-		
-		temaGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				
-				Log.d(TAG,"SELECCIONADO -> "+checkedId);
+		zoom = (ZoomControls) findViewById(R.id.pref_zoom);
+
+		zoom.setOnZoomInClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				controlador.aumentarTexto();
 			}
 		});
-		
+
+		zoom.setOnZoomOutClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				controlador.disminuirTexto();
+			}
+		});
+
+		temaGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+				Log.d(TAG, "SELECCIONADO -> " + checkedId);
+			}
+		});
+
 	}
 
 	/**
@@ -133,6 +169,7 @@ public class PreferenciasActivity extends Activity implements Observer {
 	public void update(Observable observable, Object data) {
 
 		Log.d(TAG, "Update");
-
+		actualizarTamTextos();
 	}
+
 }
