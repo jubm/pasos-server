@@ -4,14 +4,20 @@
     <string name="hello">Hello World, PasosActivity!</string>
     <string name="app_name">Pasos</string>
     <string name="notificaciones">NOTIFICACIONES</string>
+    <string name="notificaciones_desc">Sección de configuración de notificaciones</string>
     <string name="notif_vibrador">Vibrador</string>
     <string name="notif_vibrador_desc">Uso del vibrador para notificaciones</string>
+    <string name="notif_vibrador_check_desc">Habilita el uso del vibrador para las notificaciones</string>
     <string name="notif_voz">Voz</string>
     <string name="notif_voz_desc">Uso de voz para notificaciones</string>
+    <string name="notif_voz_check_desc">Habilita el uso de la voz para las notificaciones</string>
     <string name="tema">TEMA</string>
-    <string name="tema_desc">Seleccione el tema:</string>
+    <string name="tema_desc">Seleccione el tema que desee para la visualización de la aplicación</string>
     <string name="tema1">Tema 1</string>
+    <string name="tema1_desc">Escoge el tema 1</string>
     <string name="tema2">Tema 2</string>
+    <string name="tema2_desc">Escoge el tema 2</string>
     <string name="tema3">Tema 3</string>
+    <string name="tema3_desc">Escoge el tema 3</string>
 
 </resources>
