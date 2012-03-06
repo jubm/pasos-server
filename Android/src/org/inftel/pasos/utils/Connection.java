@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -16,7 +15,7 @@ import org.apache.http.protocol.HTTP;
 
 public class Connection {
 	
-	void sendMessage(String message, String ip){
+	public static void sendMessage(String message, String ip){
 		HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost("http://"+ip+":8080/PasosServerEnterpriseApplication-war/FrameHandlerServlet");
         try {
