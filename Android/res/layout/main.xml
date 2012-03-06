@@ -2,11 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:addStatesFromChildren="false"
+    android:background="@drawable/fondo"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:layout_gravity="center"
+        android:layout_marginTop="10px"
+        android:scaleType="center"
+        android:src="@drawable/logo" />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="300px"
+        android:layout_height="300px"
+        android:layout_gravity="center"
+        android:layout_marginTop="150px"
+        android:background="@drawable/bigredbutton"/>
 
 </LinearLayout>
