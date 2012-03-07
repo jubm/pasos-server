@@ -51,10 +51,7 @@ import pasosServer.model.Protegido;
  * @author Jesus Ruiz Oliva
  */
 public class CometServlet extends HttpServlet {
-    @Resource(mappedName = "jms/queue")
-    private Queue queue;
-    @Resource(mappedName = "jms/queueFactory")
-    private ConnectionFactory queueFactory;
+    
     @EJB
     private ProtegidoFacadeRemote protegidoFacade;
     @EJB
@@ -174,17 +171,12 @@ public class CometServlet extends HttpServlet {
             }
 
             }
-            if (trama!=null){                
+            if (trama!=null){
+                System.out.println("entra");
                 String LT = "LT="+trama.getLT()+";";
                 String LN = "LN="+trama.getLN()+";";
-                
-                if(trama.getType().equals("ZN")){
-                try {
-                    sendJMSMessageToQueue(trama);
-                } catch (JMSException ex) {
-                    Logger.getLogger(CometServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                }
+                System.out.println("LT: "+ LT);
+                System.out.println("LN: "+ LN);
                 ClientInfo firstClientNotBusy = null;
                 for(ClientInfo clientInfo : clientInfos){
                     if (firstClientNotBusy==null && clientInfo.getHandlerState().equals(false)){
@@ -369,26 +361,6 @@ public class CometServlet extends HttpServlet {
         return tm;
     }
 
-    private void sendJMSMessageToQueue(Object messageData) throws JMSException {
-        Connection connection = null;
-        Session session = null;
-        try {
-            connection = queueFactory.createConnection();
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            MessageProducer messageProducer = session.createProducer(queue);
-            messageProducer.send(createJMSMessageForjmsQueue(session, messageData));
-        } finally {
-            if (session != null) {
-                try {
-                    session.close();
-                } catch (JMSException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Cannot close session", e);
-                }
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
+   
         
 }

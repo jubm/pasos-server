@@ -50,26 +50,32 @@ public class FrameHandlerServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        //response.setContentType("text/html;charset=UTF-8");
         
-        System.out.println("ENTRA SERVLET FRAME");
+       System.out.println("ENTRA SERVLET FRAME");
         Frame frame = new Frame();
         RequestDispatcher requestDispatcher; 
         String trama = request.getParameter("trama");
         System.out.println("OBTENIDA TRAMA "+trama);
         
         if (trama!=null && !trama.isEmpty()){
-            String typeFrame = trama.substring(2,4);
+            String typeFrame = trama.substring(1,3);
             if (typeFrame.equals("ZN") || typeFrame.equals("TE")){
                 frame.setType(typeFrame);
                 trama = trama.substring(4);
             } else if (typeFrame.startsWith("AU")){
-                frame.setType(trama.substring(2,6));
+                frame.setType(trama.substring(1,5));
                 trama = trama.substring(6);
             }            
+            System.out.println("Trama para trocear: "+trama);
+            String[] trozos =trama.split("&");
             
-            String[] trozos =trama.split("&", 10);
-            for (String trozo: trozos){
+         
+            System.out.println(trozos.toString()+"Tamaño: "+trozos.length);
+            
+            for (int i=0; i<trozos.length; i++){
+                String trozo=trozos[i];
+                System.out.println("TROZO "+i+": "+trozo);
                if(trozo != null && !trozo.isEmpty()){
                    if (trozo.substring(0, 2).equals("LD")){
                        frame.setLD(trozo.substring(2));
@@ -78,10 +84,10 @@ public class FrameHandlerServlet extends HttpServlet {
                        frame.setLH(trozo.substring(2));
                    }
                    else if (trozo.substring(0, 2).equals("LN")){
-                       frame.setLN(converter(trozo.substring(2)));                       
+                       frame.setLN(converterLongitud(trozo.substring(2)));                       
                    }
                    else if (trozo.substring(0, 2).equals("LT")){
-                       frame.setLT(converter(trozo.substring(2)));
+                       frame.setLT(converterLatitud(trozo.substring(2)));
                    }
                    else if (trozo.substring(0, 2).equals("RD")){
                        frame.setRD(trozo.substring(2));
@@ -106,13 +112,27 @@ public class FrameHandlerServlet extends HttpServlet {
         }      
         
     }
-    public String converter(String coordenada){
+    public String converterLatitud(String coordenada){
         System.out.println("coordenda: " + coordenada);
         int signo = Integer.parseInt(coordenada.substring(0,1));
         float hh = Integer.parseInt(coordenada.substring(1,3));
         float dd = Integer.parseInt(coordenada.substring(3,5));
         float nnnn = Integer.parseInt(coordenada.substring(5));
-        float x = hh + dd/60 + nnnn/60000;        
+        float x = hh + dd/60 + nnnn/600000;        
+        if (signo ==2){
+            x= -x;
+        }
+        System.out.println(Float.toString(x));
+        return Float.toString(x);
+    }
+    
+    public String converterLongitud(String coordenada){
+        System.out.println("coordenda: " + coordenada);
+        int signo = Integer.parseInt(coordenada.substring(0,1));
+        float hh = Integer.parseInt(coordenada.substring(1,4));
+        float dd = Integer.parseInt(coordenada.substring(4,6));
+        float nnnn = Integer.parseInt(coordenada.substring(6));
+        float x = hh + dd/60 + nnnn/600000;        
         if (signo ==2){
             x= -x;
         }
