@@ -16,6 +16,7 @@ import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -44,12 +45,14 @@ public class Utils {
 	
 	public static Location currentLocation(Context context){
 		LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	        if (location==null) {
 	        	Log.d("Localizacion","No hay localizacion conocida.Abortando...");
 	            return null;
 	        }
-	     return location;  
+	     return location;
+		
+		
 	}
 	
 	public static String getIMEI(Context context){   	

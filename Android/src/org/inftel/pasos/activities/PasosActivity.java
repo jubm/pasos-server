@@ -61,15 +61,19 @@ public class PasosActivity extends Activity{
 		/*Location location= Utils.currentLocation(context);
 		Double LT = location.getLatitude();
 		Double LN = location.getLongitude();
-		String RD = Utils.getIMEI(context);
+		
 		String trama = "*$AU11&LD20120306&LH0103157&LN204283491&LT136431697&RD358987010052665";
 		Connection.sendMessage("","");
 		Toast.makeText(context, "Mensaje Enviado", Toast.LENGTH_LONG).show();
 		Log.d(getClass().getSimpleName(), "Enviando señal de alarma");*/
-		Location location= Utils.currentLocation(this.getBaseContext());
+		
+		
+		
+		/*Location location= Utils.currentLocation(this.getBaseContext());
 		Double LT = location.getLatitude();
 		Double LN = location.getLongitude();
-		Log.d(TAG,"Latitud:"+LT);
-		Log.d(TAG,"Longitud:"+LN);
+		String RD = Utils.getIMEI(this.getBaseContext());*/
+		String fechaHora =Utils.getDateHour();
+		Log.d("TAG", fechaHora);
 	}
 }
