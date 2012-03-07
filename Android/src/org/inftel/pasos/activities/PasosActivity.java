@@ -4,11 +4,12 @@ import org.inftel.pasos.R;
 import org.inftel.pasos.utils.Utils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,11 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 public class PasosActivity extends Activity{
 
 	private static final String TAG = PasosActivity.class.getSimpleName();
+	private int level;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -28,6 +29,8 @@ public class PasosActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		ImageButton button = (ImageButton)findViewById(R.id.imageButton1);
+		 this.registerReceiver(this.infoReceiver,   
+			        new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		button.setOnLongClickListener(new OnLongClickListener() {
 			
 			public boolean onLongClick(View v) {
@@ -36,6 +39,15 @@ public class PasosActivity extends Activity{
 			}
 		});
 	}
+private BroadcastReceiver infoReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context arg0, Intent intent) {
+			 level = intent.getIntExtra("level", 0);  
+		     //contentTxt.setText(String.valueOf(level) + "%");
+			
+		}
+	};
 
 	// MENU
 	public boolean onCreateOptionsMenu(Menu menu) {
