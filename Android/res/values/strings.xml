@@ -4,6 +4,7 @@
     <string name="hello">Hello World, PasosActivity!</string>
     <string name="app_name">Pasos</string>
     <string name="contactos">Contactos</string>
+    <string name="contacto">Contacto</string>
     <string name="notificaciones">NOTIFICACIONES</string>
     <string name="notificaciones_desc">Sección de configuración de notificaciones</string>
     <string name="notif_vibrador">Vibrador</string>
