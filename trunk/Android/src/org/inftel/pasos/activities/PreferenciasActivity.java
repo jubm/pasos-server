@@ -8,9 +8,13 @@ import org.inftel.pasos.controlador.Controlador;
 import org.inftel.pasos.modelo.Modelo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -187,5 +191,33 @@ public class PreferenciasActivity extends Activity implements Observer {
 		actualizarOpciones();
 		actualizarTamTextos();
 	}
+	
+	// MENU
+		public boolean onCreateOptionsMenu(Menu menu) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.menu_preferencias, menu);
+			return true;
+		}
+
+		public boolean onOptionsItemSelected(MenuItem item) {
+			Intent intent;
+
+			switch (item.getItemId()) {
+			case R.id.menu_alarma:
+
+				intent = new Intent(this, PasosActivity.class);
+				startActivity(intent);
+
+				return true;
+				
+			case R.id.menu_contactos:
+				
+				intent = new Intent(this, ContactosActivity.class);
+				startActivity(intent);
+				
+				return true;
+			}
+			return super.onOptionsItemSelected(item);
+		}
 
 }

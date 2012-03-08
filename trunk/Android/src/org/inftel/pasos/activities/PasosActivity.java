@@ -96,14 +96,21 @@ public class PasosActivity extends Activity {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-
+		Intent intent;
 
 		switch (item.getItemId()) {
 		case R.id.menu_configuracion:
 
-			Intent intent = new Intent(this, PreferenciasActivity.class);
+			intent = new Intent(this, PreferenciasActivity.class);
 			startActivity(intent);
 
+			return true;
+			
+		case R.id.menu_contactos:
+			
+			intent = new Intent(this, ContactosActivity.class);
+			startActivity(intent);
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
