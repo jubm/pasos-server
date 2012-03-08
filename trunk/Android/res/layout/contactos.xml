@@ -16,7 +16,7 @@
                android:layout_weight="1"
                android:drawSelectorOnTop="false"
                android:choiceMode="singleChoice"
-               android:clickable="true"/>
+               android:focusableInTouchMode="false"/>
 
      <TextView android:id="@android:id/empty"
                android:layout_width="match_parent"

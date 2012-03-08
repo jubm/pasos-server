@@ -45,7 +45,7 @@ public class Utils {
 	
 	public static String currentLocation(Context context){
 		LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	        if (location==null) {
 	        	Log.d("Localizacion","No hay localizacion conocida.Abortando...");
 	            return "";
