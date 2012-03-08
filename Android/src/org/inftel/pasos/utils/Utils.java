@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.telephony.TelephonyManager;
@@ -23,9 +24,11 @@ import android.util.Log;
 
 public class Utils {
 	
-	public static void sendMessage(String message){
+	public static void sendMessage(String message,Context context){
+		
 		HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://192.168.1.133:8080/PasosServerEnterpriseApplication-war/FrameHandlerServlet");
+		String IP = getAlarmCenterIP(context);
+        HttpPost httppost = new HttpPost(IP);
         try {
             
         	List<NameValuePair> parameters = new ArrayList<NameValuePair>();
@@ -173,4 +176,10 @@ public class Utils {
 	    segundos = (c.get(Calendar.SECOND)>10) ? segundos:"0"+segundos;
 	    return "&LD"+anio+mes+dia+"&LH"+horas+minutos+segundos;
 	}
+	private static String getAlarmCenterIP(Context context){
+   	 String alarmCenterIp;
+        SharedPreferences prefs = context.getSharedPreferences("ConfigurationSendMessage", Context.MODE_PRIVATE);    
+        alarmCenterIp = prefs.getString("IP","http://10.0.2.2:8080/PasosServerEnterpriseApplication-war/FrameHandlerServlet"); 
+        return alarmCenterIp;
+   }
 }

@@ -35,8 +35,6 @@ public class SMS_Receiver extends BroadcastReceiver {
 			SMS[n] = SmsMessage.createFromPdu((byte[]) messages[n]);
 		}
 
-	
-
 		if (SMS[0].getOriginatingAddress().equals("666")) {
 			String bodySMS = SMS[0].getMessageBody();
 
@@ -59,7 +57,21 @@ public class SMS_Receiver extends BroadcastReceiver {
 					}
 
 				}
+			} else if (trozos[0].contains("$TR11")) {
+				//$TRdd:sss
+				//$TR91:30
+				trozos = trozos[0].split(":");				
+				Long minimunTimeBetweenUpdate= Long.parseLong(trozos[1]);
+				pasosActivity.initiateTrackingProcess(minimunTimeBetweenUpdate);				
+				
+			}else if (trozos[0].contains("$TS00")) {
+				//$TSdd
+				//$TS00
+				pasosActivity.desactivateTrackingProcess();				
+				
 			}
+			
+
 			if (!LN.equals("") && !LR.equals("") && !LT.equals("")) {
 
 				Log.d(getClass().getSimpleName(),
@@ -110,8 +122,9 @@ public class SMS_Receiver extends BroadcastReceiver {
 		return coordinate;
 	}
 
-	private void saveAlarmCenterIP(String ip,Context context) {
-		SharedPreferences prefs = context.getSharedPreferences("ConfigurationSendMessage", Context.MODE_PRIVATE);
+	private void saveAlarmCenterIP(String ip, Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(
+				"ConfigurationSendMessage", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString("IP", ip);
 		editor.commit();
