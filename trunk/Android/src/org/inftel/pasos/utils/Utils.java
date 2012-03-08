@@ -3,8 +3,8 @@ package org.inftel.pasos.utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -19,13 +19,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 public class Utils {
 	
-	public static void sendMessage(String message,Context context){
-		
+	public static boolean sendMessage(String message,Context context){
+		boolean result = false;
 		HttpClient httpclient = new DefaultHttpClient();
 		String IP = getAlarmCenterIP(context);
         HttpPost httppost = new HttpPost(IP);
@@ -38,12 +39,15 @@ public class Utils {
 
             // Execute HTTP Post Request
             httpclient.execute(httppost);
+            result = true;
             
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
         } catch (IOException e) {
             // TODO Auto-generated catch block
         }
+        
+        return result;
 	}
 	
 	public static String currentLocation(Context context){
@@ -175,6 +179,36 @@ public class Utils {
 	    minutos= (c.get(Calendar.MINUTE)>10) ? minutos:"0"+minutos;
 	    segundos = (c.get(Calendar.SECOND)>10) ? segundos:"0"+segundos;
 	    return "&LD"+anio+mes+dia+"&LH"+horas+minutos+segundos;
+	}
+	
+	public static void vibracion(Context context, int modo){
+
+		Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+		int corto = 200;		
+		int largo = 500;		
+		int silencio_largo = 200;
+		int silencio_corto = 100;
+
+		
+		switch(modo){
+		case 0: // Se va a enviar alarma
+			
+			long[] pattern1 = {0, largo};
+			v.vibrate(pattern1, -1);
+
+			break;
+			
+		case 1: // Alarma enviada con Žxito
+			long[] pattern2 = {0, largo, silencio_largo, largo};
+			v.vibrate(pattern2, -1);
+			break;
+			
+		case 2: // Fallo al enviar la alarma
+			long[] pattern3 = {0, corto, silencio_corto, corto, silencio_corto, corto, silencio_corto, corto, silencio_corto, corto};
+			v.vibrate(pattern3, -1);
+			break;
+		}
 	}
 	private static String getAlarmCenterIP(Context context){
    	 String alarmCenterIp;

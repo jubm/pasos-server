@@ -26,5 +26,8 @@
     <string name="no_contactos_desc">No existen contactos para el usuario</string>
     <string name="contactos_desc">Pulse para llamar al contacto</string>
     <string name="alarma">Alarma</string>
-
+    <string name="alarma_enviada_exito">La alarma ha sido enviada con éxito a la central. Por favor, espere la llamada del operador.</string>
+    <string name="alarma_enviada_fallo">No ha sido posible enviar la alarma a la central.</string>
+    <string name="alarma_enviando">Se va a enviar alarma a la central.</string>
+    
 </resources>
