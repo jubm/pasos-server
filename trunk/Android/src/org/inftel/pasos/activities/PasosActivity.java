@@ -85,13 +85,28 @@ public class PasosActivity extends Activity implements Observer,
 				Intent.ACTION_BATTERY_CHANGED));
 
 		ImageButton button = (ImageButton) findViewById(R.id.imageButton1);
-		button.setOnLongClickListener(new OnLongClickListener() {
 
-			public boolean onLongClick(View v) {
-				sendFrame();
-				return true;
+		// Si hay conexi—n a Internet -> se asigna listener para enviar alarmas
+		if (Utils.comprobarConexionInternet(getBaseContext())) {
+			button.setOnLongClickListener(new OnLongClickListener() {
+
+				public boolean onLongClick(View v) {
+					sendFrame();
+					return true;
+				}
+			});
+		} else { // Si no hay conexi—n a Internet -> se notifica
+			Toast.makeText(this, getString(R.string.no_conexion),
+					Toast.LENGTH_LONG).show();
+
+			if (controlador.getNotifVoz()) {
+				tts.speak(getString(R.string.no_conexion),
+						TextToSpeech.QUEUE_FLUSH, null);
 			}
-		});
+			if (controlador.getNotifVibracion()) {
+				Utils.vibracion(getBaseContext(), 2);
+			}
+		}
 
 	}
 
@@ -167,7 +182,7 @@ public class PasosActivity extends Activity implements Observer,
 		String trama = "$AU11" + fechaHora + location + imei;
 		Log.d(TAG, trama);
 
-		boolean envio = Utils.sendMessage(trama,this);
+		boolean envio = Utils.sendMessage(trama, this);
 
 		if (envio) {// La alarma se ha enviado con Žxito
 
