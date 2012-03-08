@@ -67,6 +67,7 @@ public class PasosActivity extends Activity {
 				return true;
 			}
 		});
+		
 	}
 
 	@Override
@@ -96,6 +97,7 @@ public class PasosActivity extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+
 		switch (item.getItemId()) {
 		case R.id.menu_configuracion:
 
@@ -106,27 +108,16 @@ public class PasosActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void sendFrame(){
 
-	public void sendFrame() {
-		/*
-		 * Location location= Utils.currentLocation(context); Double LT =
-		 * location.getLatitude(); Double LN = location.getLongitude();
-		 * 
-		 * String trama =
-		 * "*$AU11&LD20120306&LH0103157&LN204283491&LT136431697&RD358987010052665"
-		 * ; Connection.sendMessage("",""); Toast.makeText(context,
-		 * "Mensaje Enviado", Toast.LENGTH_LONG).show();
-		 * Log.d(getClass().getSimpleName(), "Enviando señal de alarma");
-		 */
+		String location= Utils.currentLocation(this.getBaseContext());
+		String fechaHora =Utils.getDateHour();
+		String imei = Utils.getIMEI(this.getBaseContext());
+		String trama = "$AU11"+fechaHora+location+imei;
+		Log.d(TAG, trama);
+		Utils.sendMessage(trama);
 
-		/*
-		 * Location location= Utils.currentLocation(this.getBaseContext());
-		 * Double LT = location.getLatitude(); Double LN =
-		 * location.getLongitude(); String RD =
-		 * Utils.getIMEI(this.getBaseContext());
-		 */
-		String fechaHora = Utils.getDateHour();
-		Log.d("TAG", fechaHora);
 	}
 
 	public void saveProximityAlertPoint(double longitude, double latitude,
