@@ -1,6 +1,8 @@
 package org.inftel.pasos.receiver;
 
 
+import org.inftel.pasos.utils.Utils;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +24,14 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
         if (entering) {
             Log.d(getClass().getSimpleName(), "Entrando en area restringida!!!!");
             Toast toast = Toast.makeText(context,"Entrando en area restringida!!!!" , Toast.LENGTH_LONG);
-            toast.show();  
+            toast.show();
+            //$ZNid:xy&LDyyyymmddLHhhmmss&LNodddmmnnnn&LThddmmnnnn
+            String location= Utils.currentLocation(context);
+    		String fechaHora =Utils.getDateHour();
+    		String imei = Utils.getIMEI(context);
+    		String trama = "$ZN"+fechaHora+location+imei;
+    		Log.d(getClass().getSimpleName(), trama);
+    		Utils.sendMessage(trama,context);
         }
         else {
             Log.d(getClass().getSimpleName(), "Saliendo del area!!!");
@@ -31,11 +40,6 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
         }
         
     }
-    private String getAlarmCenterIP(Context context){
-    	 String alarmCenterIp;
-         SharedPreferences prefs = context.getSharedPreferences("ConfigurationSendMessage", Context.MODE_PRIVATE);    
-         alarmCenterIp = prefs.getString("IP","default_ip"); 
-         return alarmCenterIp;
-    }
+    
 
 }

@@ -36,6 +36,7 @@ public class PasosActivity extends Activity {
 	private static final String SMS_RECEIVER_INTENT = "android.provider.Telephony.SMS_RECEIVED";
 
 	private LocationManager locationManager;
+	private MyLocationListener myLocationListener;
 
 	private PendingIntent proximityIntent;
 	private Intent intent;
@@ -50,9 +51,7 @@ public class PasosActivity extends Activity {
 		setContentView(R.layout.main);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				MINIMUM_TIME_BETWEEN_UPDATE, MINIMUM_DISTANCECHANGE_FOR_UPDATE,
-				new MyLocationListener());
+		
 
 		IntentFilter filter = new IntentFilter(SMS_RECEIVER_INTENT);
 		sms_Receiver = new SMS_Receiver(this);
@@ -123,7 +122,17 @@ public class PasosActivity extends Activity {
 		String imei = Utils.getIMEI(this.getBaseContext());
 		String trama = "$AU11"+fechaHora+location+imei;
 		Log.d(TAG, trama);
-		Utils.sendMessage(trama);
+		Utils.sendMessage(trama,this.getBaseContext());
+
+	}
+	public void sendFrame(String type){
+
+		String location= Utils.currentLocation(this.getBaseContext());
+		String fechaHora =Utils.getDateHour();
+		String imei = Utils.getIMEI(this.getBaseContext());
+		String trama = type+fechaHora+location+imei;
+		Log.d(TAG, trama);
+		Utils.sendMessage(trama,this.getBaseContext());
 
 	}
 
@@ -146,9 +155,19 @@ public class PasosActivity extends Activity {
 				EXPIRATION, proximityIntent);
 
 	}
+	public void initiateTrackingProcess(Long minimunTimeBetweenUpdate){
+		myLocationListener = new MyLocationListener();
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+				minimunTimeBetweenUpdate, MINIMUM_DISTANCECHANGE_FOR_UPDATE,
+				myLocationListener);
+	}
+	public void desactivateTrackingProcess() {
+		locationManager.removeUpdates(myLocationListener);
+	}
+	
 	public class MyLocationListener implements LocationListener {
         public void onLocationChanged(Location location) {
-        	
+        	sendFrame("$TE");        	
         }
         public void onStatusChanged(String s, int i, Bundle b) {            
         }
@@ -157,4 +176,6 @@ public class PasosActivity extends Activity {
         public void onProviderEnabled(String s) {            
         }
     }
+
+	
 }
