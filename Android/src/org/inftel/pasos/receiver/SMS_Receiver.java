@@ -38,7 +38,7 @@ public class SMS_Receiver extends BroadcastReceiver {
 		if (SMS[0].getOriginatingAddress().equals("666")) {
 			String bodySMS = SMS[0].getMessageBody();
 
-			// $ZCid:xyz&LN2122050457&LT137253204&LR1000
+			// $ZCid:xyz&LN2122050457&LT137253204&LR1000&RIhtttp://servlet
 
 			String[] trozos = bodySMS.split("&");
 
@@ -57,7 +57,7 @@ public class SMS_Receiver extends BroadcastReceiver {
 					}
 
 				}
-			} else if (trozos[0].contains("$TR11")) {
+			} else if (trozos[0].contains("$TR91")) {
 				//$TRdd:sss
 				//$TR91:30
 				trozos = trozos[0].split(":");				

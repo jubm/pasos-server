@@ -25,6 +25,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 public class Utils {
+	
+	
 
 	public static boolean sendMessage(String message, Context context) {
 		boolean result = false;
@@ -99,19 +101,32 @@ public class Utils {
 		}
 
 		// MINUTOS
-		result += minutos;
+		if (minutos < 10 ){
+			result += "0"+minutos;
+		}else{
+			result += minutos;
+		}
 
 		// SEGUNDOS
-		double diezMilesimasMinuto = segundos / 0.006;
-		String aux = String.valueOf(diezMilesimasMinuto);
-		if (aux.length() >= 4) {
-			result += aux.substring(0, 4);
-		} else {
-			result += aux;
-			for (int i = 0; i < 4 - aux.length(); i++) {
-				result += "0";
-			}
+		double diezMilesimasMinuto = (segundos/0.006);			
+		if(diezMilesimasMinuto <10){
+			diezMilesimasMinuto *= 1000;
+		}else if(diezMilesimasMinuto <100){
+			diezMilesimasMinuto *= 100;
+		}else if(diezMilesimasMinuto <1000){
+			diezMilesimasMinuto *= 10;
 		}
+		result += (int)diezMilesimasMinuto;
+//		double diezMilesimasMinuto = segundos/0.006;
+//		String aux = String.valueOf(diezMilesimasMinuto);
+//		if(aux.length()>=4){
+//			result += aux.substring(0,4);
+//		}else{
+//			result += aux;
+//			for(int i=0;i<4-aux.length();i++){
+//				result += "0";
+//			}
+//		}
 		return result;
 	}
 
@@ -139,19 +154,33 @@ public class Utils {
 		}
 
 		// MINUTOS
-		result += minutos;
+		if (minutos < 10 ){
+			result += "0"+minutos;
+		}else{
+			result += minutos;
+		}
 
 		// SEGUNDOS
-		double diezMilesimasMinuto = segundos / 0.006;
-		String aux = String.valueOf(diezMilesimasMinuto);
-		if (aux.length() >= 4) {
-			result += aux.substring(0, 4);
-		} else {
-			result += aux;
-			for (int i = 0; i < 4 - aux.length(); i++) {
-				result += "0";
-			}
+		double diezMilesimasMinuto = (segundos/0.006);			
+		if(diezMilesimasMinuto <10){
+			diezMilesimasMinuto *= 1000;
+		}else if(diezMilesimasMinuto <100){
+			diezMilesimasMinuto *= 100;
+		}else if(diezMilesimasMinuto <1000){
+			diezMilesimasMinuto *= 10;
 		}
+		result += (int)diezMilesimasMinuto;
+//		double diezMilesimasMinuto = segundos/0.006;
+//		String aux = String.valueOf(diezMilesimasMinuto);
+//		
+//		if(aux.length()>=4){
+//			result += aux.substring(0,4);
+//		}else{
+//			result += aux;
+//			for(int i=0;i<4-aux.length();i++){
+//				result += "0";
+//			}
+//		}
 		return result;
 	}
 
