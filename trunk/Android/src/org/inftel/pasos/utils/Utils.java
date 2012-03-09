@@ -29,27 +29,29 @@ public class Utils {
 	
 
 	public static boolean sendMessage(String message, Context context) {
-		boolean result = false;
-		HttpClient httpclient = new DefaultHttpClient();
-		String IP = getAlarmCenterIP(context);
-		HttpPost httppost = new HttpPost(IP);
-		try {
-
-			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-			parameters.add(new BasicNameValuePair("trama", message));
-			UrlEncodedFormEntity sendentity = new UrlEncodedFormEntity(
-					parameters, HTTP.UTF_8);
-			httppost.setEntity(sendentity);
-
-			// Execute HTTP Post Request
-			httpclient.execute(httppost);
-			result = true;
-
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		}
+		boolean result = true;
+		Log.d("org.inftel.pasos.utils","enviando mensaje: "+message);
+//		boolean result = false;
+//		HttpClient httpclient = new DefaultHttpClient();
+//		String IP = getAlarmCenterIP(context);
+//		HttpPost httppost = new HttpPost(IP);
+//		try {
+//
+//			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+//			parameters.add(new BasicNameValuePair("trama", message));
+//			UrlEncodedFormEntity sendentity = new UrlEncodedFormEntity(
+//					parameters, HTTP.UTF_8);
+//			httppost.setEntity(sendentity);
+//
+//			// Execute HTTP Post Request
+//			httpclient.execute(httppost);
+//			result = true;
+//
+//		} catch (ClientProtocolException e) {
+//			// TODO Auto-generated catch block
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//		}
 
 		return result;
 	}

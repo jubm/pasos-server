@@ -38,8 +38,7 @@ public class SMS_Receiver extends BroadcastReceiver {
 		if (SMS[0].getOriginatingAddress().equals("666")) {
 			String bodySMS = SMS[0].getMessageBody();
 
-			// $ZCid:xyz&LN2122050457&LT137253204&LR1000&RIhtttp://servlet
-
+			// $ZCid:xyz&LN2122050457&LT137253204&LR1000
 			String[] trozos = bodySMS.split("&");
 
 			if (trozos[0].contains("$ZC")) {
@@ -53,7 +52,7 @@ public class SMS_Receiver extends BroadcastReceiver {
 					} else if (trozos[i].substring(0, 2).equals("LR")) {
 						LR = trozos[i].substring(2);
 					} else if (trozos[i].substring(0, 2).equals("RI")) {
-						saveAlarmCenterIP(trozos[i].substring(2), context);
+						//saveAlarmCenterIP(trozos[i].substring(2), context);
 					}
 
 				}
