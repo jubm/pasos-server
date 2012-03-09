@@ -29,7 +29,7 @@
         <item name="android:layout_marginTop">3dip</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/negro</item>
+        <item name="android:background">@drawable/fondo_negro</item>
         <item name="android:layout_margin">4dip</item>
         <item name="android:paddingLeft">4dip</item>
         <item name="android:paddingRight">4dip</item>
@@ -57,7 +57,7 @@
         <item name="android:layout_marginTop">3dip</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/amarillo</item>
+        <item name="android:background">@drawable/fondo_amarillo</item>
         <item name="android:layout_margin">4dip</item>
         <item name="android:paddingLeft">4dip</item>
         <item name="android:paddingRight">4dip</item>
@@ -85,7 +85,7 @@
         <item name="android:layout_marginTop">3dip</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/morado</item>
+        <item name="android:background">@drawable/fondo_morado</item>
         <item name="android:layout_margin">4dip</item>
         <item name="android:paddingLeft">4dip</item>
         <item name="android:paddingRight">4dip</item>

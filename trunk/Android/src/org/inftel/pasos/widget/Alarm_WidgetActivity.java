@@ -1,8 +1,9 @@
 package org.inftel.pasos.widget;
 
 
-import org.inftel.pasos.utils.Utils;
 import org.inftel.pasos.R;
+import org.inftel.pasos.utils.Utils;
+
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -14,6 +15,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -45,12 +47,12 @@ public class Alarm_WidgetActivity extends AppWidgetProvider {
 			
 			Toast.makeText(context, "Mensaje Enviado", Toast.LENGTH_LONG).show();
 			Log.d(getClass().getSimpleName(), "Enviando señal de alarma");
-//			Location location= currentLocation(context);
-//			Double LT = location.getLatitude();
-//			Double LN = location.getLongitude();
-//			String RD = getIMEI(context);
-//			String trama = "*$AU11&LD20120306&LH0103157&LN204283491&LT136431697&RD358987010052665";
-//			Connection.sendMessage("","");
+			
+			String location = Utils.currentLocation(context);
+			String fechaHora = Utils.getDateHour();
+			String imei = Utils.getIMEI(context);
+			String trama = "$AU11" + fechaHora + location + imei;
+			boolean envio = Utils.sendMessage(trama, context);
 			
 		}
 
@@ -71,7 +73,5 @@ public class Alarm_WidgetActivity extends AppWidgetProvider {
     	String IMEI = tm.getDeviceId();
     	return IMEI;
     }
-
 	
-
 }

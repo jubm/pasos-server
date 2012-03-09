@@ -1,18 +1,34 @@
 package org.inftel.pasos.utils;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.inftel.pasos.vos.ContactoEnvio;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import com.thoughtworks.xstream.XStream;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,6 +37,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Vibrator;
+import android.sax.Element;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -31,29 +48,67 @@ public class Utils {
 	public static boolean sendMessage(String message, Context context) {
 		boolean result = true;
 		Log.d("org.inftel.pasos.utils","enviando mensaje: "+message);
-//		boolean result = false;
-//		HttpClient httpclient = new DefaultHttpClient();
-//		String IP = getAlarmCenterIP(context);
-//		HttpPost httppost = new HttpPost(IP);
-//		try {
-//
-//			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-//			parameters.add(new BasicNameValuePair("trama", message));
-//			UrlEncodedFormEntity sendentity = new UrlEncodedFormEntity(
-//					parameters, HTTP.UTF_8);
-//			httppost.setEntity(sendentity);
-//
-//			// Execute HTTP Post Request
-//			httpclient.execute(httppost);
-//			result = true;
-//
-//		} catch (ClientProtocolException e) {
-//			// TODO Auto-generated catch block
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//		}
+		HttpClient httpclient = new DefaultHttpClient();
+		String IP = getAlarmCenterIP(context);
+		HttpPost httppost = new HttpPost(IP);
+		try {
+
+			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+			parameters.add(new BasicNameValuePair("trama", message));
+			UrlEncodedFormEntity sendentity = new UrlEncodedFormEntity(
+					parameters, HTTP.UTF_8);
+			httppost.setEntity(sendentity);
+
+			// Execute HTTP Post Request
+			httpclient.execute(httppost);
+			result = true;
+
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
 
 		return result;
+	}
+
+	public static ArrayList<ContactoEnvio> getContactosFromServer(Context context) {
+		ArrayList<ContactoEnvio> contactos = null;
+        Log.d("Contactos", "Enviando peticion contactos");
+        HttpClient httpclient = new DefaultHttpClient();
+		String IP = "http://192.168.1.128:8080/PasosServerEnterpriseApplication-war/ContactosServlet";
+		HttpPost httppost = new HttpPost(IP);
+		try {
+
+			List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+			parameters.add(new BasicNameValuePair("imei", Utils.getIMEI(context).substring(3)));
+	        Log.d("Contactos", "Imei -> "+Utils.getIMEI(context).substring(3));
+
+			UrlEncodedFormEntity sendentity = new UrlEncodedFormEntity(
+					parameters, HTTP.UTF_8);
+			httppost.setEntity(sendentity);
+
+			// Execute HTTP Post Request
+			ResponseHandler<String> responseHandler=new BasicResponseHandler();
+	        String responseBody = httpclient.execute(httppost, responseHandler);
+	        Log.d("Contactos", "RESPUESTA OBTENIDA -> "+responseBody);
+			XStream xstream = new XStream();
+			contactos = (ArrayList<ContactoEnvio>) xstream.fromXML(responseBody);
+			for(ContactoEnvio c:contactos){
+				Log.d("Contactos","Contacto obtenido -> "+c);
+			}
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+	        Log.d("Contactos", "Excepcion -> "+e);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block       
+			Log.d("Contactos", "Excepcion -> "+e);
+
+		}
+
+		return contactos;
 	}
 
 	public static String currentLocation(Context context) {
@@ -257,7 +312,7 @@ public class Utils {
 				"ConfigurationSendMessage", Context.MODE_PRIVATE);
 		alarmCenterIp = prefs
 				.getString("IP",
-						"http://10.0.2.2:8080/PasosServerEnterpriseApplication-war/FrameHandlerServlet");
+						"http://192.168.1.128:8080/PasosServerEnterpriseApplication-war/FrameHandlerServlet");
 		return alarmCenterIp;
 	}
 
@@ -266,16 +321,16 @@ public class Utils {
 		ConnectivityManager conMgr = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (conMgr != null) {
-			Log.d("PasosActivity","manager not null");
+			Log.d("PasosActivity", "manager not null");
 			NetworkInfo i = conMgr.getActiveNetworkInfo();
 			if (i != null) {
-				Log.d("PasosActivity","network info not null");
+				Log.d("PasosActivity", "network info not null");
 
 				if (i.isConnected() && i.isAvailable())
-					Log.d("PasosActivity","Conectado");
+					Log.d("PasosActivity", "Conectado");
 
-					conexion = true;
-			}else{
+				conexion = true;
+			} else {
 				conexion = false;
 			}
 		} else {

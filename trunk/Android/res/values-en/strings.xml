@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="hello">Hello World, PasosActivity!</string>
     <string name="app_name">Pasos</string>
     <string name="contactos">Contacts</string>
@@ -29,4 +30,6 @@
     <string name="alarma_enviando">The alarm is going to be sent to the central</string>
     <string name="no_conexion">The phone is not connected to the Internet. Please, check the connection</string>
     <string name="widname">Pasos</string>
+    <string name="boton_alarma">Press and hold the button to send an alarm to the central.</string>
+
 </resources>

@@ -9,6 +9,7 @@ import org.inftel.pasos.R;
 import org.inftel.pasos.controlador.Controlador;
 import org.inftel.pasos.list.ContactosAdapter;
 import org.inftel.pasos.modelo.Modelo;
+import org.inftel.pasos.utils.Utils;
 import org.inftel.pasos.vos.ContactoEnvio;
 
 import android.app.ListActivity;
@@ -64,7 +65,8 @@ public class ContactosActivity extends ListActivity implements Observer {
 		});
 
 		// PETICIÓN CONTACTOS
-		getContactos();
+		contactos = Utils.getContactosFromServer(context);
+		//getContactos();
 
 		adapter = new ContactosAdapter(this, contactos);
 		setListAdapter(adapter);
