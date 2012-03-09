@@ -30,5 +30,6 @@
     <string name="alarma_enviada_fallo">No ha sido posible enviar la alarma a la central.</string>
     <string name="alarma_enviando">Se va a enviar alarma a la central.</string>
     <string name="no_conexion">El teléfono no está conectado a Internet. Por favor, compruebe la conexión.</string>
+    <string name="widname">Pasos</string>
 
 </resources>
