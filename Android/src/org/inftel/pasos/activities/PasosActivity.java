@@ -73,9 +73,9 @@ public class PasosActivity extends Activity implements Observer,
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				MINIMUM_TIME_BETWEEN_UPDATE, MINIMUM_DISTANCECHANGE_FOR_UPDATE,
-				new MyLocationListener());
+//		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//				MINIMUM_TIME_BETWEEN_UPDATE, MINIMUM_DISTANCECHANGE_FOR_UPDATE,
+//				new MyLocationListener());
 
 		IntentFilter filter = new IntentFilter(SMS_RECEIVER_INTENT);
 		sms_Receiver = new SMS_Receiver(this);
@@ -246,6 +246,7 @@ public class PasosActivity extends Activity implements Observer,
 	}
 
 	public void initiateTrackingProcess(Long minimunTimeBetweenUpdate) {
+		Log.d(getClass().getSimpleName(),"Iniciando tracking process");
 		myLocationListener = new MyLocationListener();
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				minimunTimeBetweenUpdate, MINIMUM_DISTANCECHANGE_FOR_UPDATE,
@@ -258,7 +259,7 @@ public class PasosActivity extends Activity implements Observer,
 
 	public class MyLocationListener implements LocationListener {
 		public void onLocationChanged(Location location) {
-
+			sendFrame("$TE");
 		}
 
 		public void onStatusChanged(String s, int i, Bundle b) {
@@ -304,16 +305,4 @@ public class PasosActivity extends Activity implements Observer,
 		}
 	}
 
-	public void onLocationChanged(Location location) {
-		sendFrame("$TE");
-	}
-
-	public void onStatusChanged(String s, int i, Bundle b) {
-	}
-
-	public void onProviderDisabled(String s) {
-	}
-
-	public void onProviderEnabled(String s) {
-	}
 }
