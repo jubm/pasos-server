@@ -235,17 +235,18 @@ public class Utils {
 		ConnectivityManager conMgr = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (conMgr != null) {
+			Log.d("PasosActivity","manager not null");
 			NetworkInfo i = conMgr.getActiveNetworkInfo();
 			if (i != null) {
-				if (!i.isConnected())
-					conexion = false;
-				if (!i.isAvailable())
-					conexion = false;
-			}
+				Log.d("PasosActivity","network info not null");
 
-			if (i == null)
+				if (i.isConnected() && i.isAvailable())
+					Log.d("PasosActivity","Conectado");
+
+					conexion = true;
+			}else{
 				conexion = false;
-
+			}
 		} else {
 			conexion = false;
 		}
