@@ -34,7 +34,7 @@ public class PasosActivity extends Activity implements Observer,
 		TextToSpeech.OnInitListener {
 
 	private static final String TAG = PasosActivity.class.getSimpleName();
-	private int level;
+	private int nivelBateria;
 	private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1;
 	private static final long MINIMUM_TIME_BETWEEN_UPDATE = 1000;
 
@@ -113,9 +113,9 @@ public class PasosActivity extends Activity implements Observer,
 
 	@Override
 	public void onDestroy() {
-		locationManager.removeProximityAlert(proximityIntent);
-		unregisterReceiver(sms_Receiver);
-		unregisterReceiver(proximityIntentReceiver);
+		//locationManager.removeProximityAlert(proximityIntent);
+		//unregisterReceiver(sms_Receiver);
+		//unregisterReceiver(proximityIntentReceiver);
 
 		if (tts != null) {
 			tts.stop();
@@ -129,9 +129,8 @@ public class PasosActivity extends Activity implements Observer,
 
 		@Override
 		public void onReceive(Context arg0, Intent intent) {
-			level = intent.getIntExtra("level", 0);
-			// contentTxt.setText(String.valueOf(level) + "%");
-
+			nivelBateria = intent.getIntExtra("level", 0);
+			Log.d(TAG,"NIVEL BATERIA -> "+nivelBateria);
 		}
 	};
 
@@ -180,7 +179,7 @@ public class PasosActivity extends Activity implements Observer,
 		String location = Utils.currentLocation(this.getBaseContext());
 		String fechaHora = Utils.getDateHour();
 		String imei = Utils.getIMEI(this.getBaseContext());
-		String trama = "$AU11" + fechaHora + location + imei;
+		String trama = "$AU11" + fechaHora + location + imei+"&PB"+nivelBateria;
 		Log.d(TAG, trama);
 
 		boolean envio = Utils.sendMessage(trama, this);
@@ -210,7 +209,6 @@ public class PasosActivity extends Activity implements Observer,
 				Utils.vibracion(getBaseContext(), 2);
 			}
 		}
-		Utils.sendMessage(trama, this.getBaseContext());
 
 	}
 
