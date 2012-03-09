@@ -67,11 +67,10 @@ public class PasosActivity extends Activity implements Observer,
 
 		initModeloControlador();
 
-		if (controlador.getNotifVoz()) {
-			Intent checkIntent = new Intent();
-			checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-			startActivityForResult(checkIntent, TTS_CHECK_CODE);
-		}
+		Intent checkIntent = new Intent();
+		checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+		startActivityForResult(checkIntent, TTS_CHECK_CODE);
+
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -88,6 +87,7 @@ public class PasosActivity extends Activity implements Observer,
 
 		// Si hay conexi—n a Internet -> se asigna listener para enviar alarmas
 		if (Utils.comprobarConexionInternet(getBaseContext())) {
+			Log.d(TAG, "HAY CONEXION");
 			button.setOnLongClickListener(new OnLongClickListener() {
 
 				public boolean onLongClick(View v) {
@@ -96,6 +96,7 @@ public class PasosActivity extends Activity implements Observer,
 				}
 			});
 		} else { // Si no hay conexi—n a Internet -> se notifica
+			Log.d(TAG, "NO HAY CONEXION");
 			Toast.makeText(this, getString(R.string.no_conexion),
 					Toast.LENGTH_LONG).show();
 
